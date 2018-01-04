@@ -236,7 +236,6 @@ describe('Status', function () {
 
   });
 
-
   after(function (done) {
     Status.remove(done);
   });

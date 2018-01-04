@@ -1,13 +1,13 @@
 'use strict';
 
 
+
 /**
- * @apiDefine ServiceGroup ServiceGroup
- * Provide ability to group service offered by a jurisdiction(s)
- * into meaningful categories e.g Sanitation
- * It provides a way to group several service request types (issues)
- * under meaningful categories such as Sanitation, Commercial, Billing,
- * Non-Commercial etc.
+ * @apiDefine Status Status
+ * Manage entity(i.e service & service request(issue)) status.
+ * Provides a way set status of service and service request
+ * types (issues) in order to track their progress.
+ *
  */
 
 //dependencies
@@ -20,7 +20,7 @@ const expressMquery = require('express-mquery').middleware;
 const response = require('express-respond');
 
 
-function priorityRouter(options) {
+function statusRouter(options) {
 
   // ensure options
   options = _.merge({}, options);
@@ -66,13 +66,13 @@ function priorityRouter(options) {
     controller.destroy));
 
 
-  //add specific middlewares to priorities router
-  router.all('/priorities*', preMiddlewares);
+  //add specific middlewares to statuses router
+  router.all('/statuses*', preMiddlewares);
 
   /**
-   * @api {get} /priorities Get Priorities
-   * @apiGroup Priority
-   * @apiName GetPriorities
+   * @api {get} /statuses Get Statutes
+   * @apiGroup Status
+   * @apiName GetStatutes
    * @apiVersion 0.1.0
    *
    * @apiHeader {String}      Accept
@@ -80,83 +80,66 @@ function priorityRouter(options) {
    * @apiHeader {String}      Authorization
    *        Authorization token
    *
+   *
    * @apiExample Example Usage
-   * curl -i http://dawasco.herokuapp.com/priorities
+   * curl -i http://dawasco.herokuapp.com/statuses
    *
    *
    * @apiSuccess {String}     name
-   *        Unique Human readable name of the priority e.g High, Low, Medium.
+   *        Status Name
    * @apiSuccess {Number}     weight
-   *        Weight of the priority to help in ordering service request(issue)
-   *        based on priority.
+   *        Weight of the status to help in ordering service request(issue) based on status
    * @apiSuccess {String}     color
-   *        A color code used to differentiate a service request priority visually.
+   *        A color code used to differentiate a service request status visually.
    * @apiSuccess {ObjectId}   _id
-   *        Priority Id
+   *        Status Id
    * @apiSuccess {Timestamp}  createdAt
-   *        Priority creation date
+   *        Status creation date
    * @apiSuccess {Timestamp}  updatedAt
-   *        Priority updated date
+   *        Status updated date
    * @apiSuccess {String}     uri
-   *        Priority URI
+   *        Status URI
    * @apiSuccess {Number}     pages
    *        Number of results pages
    * @apiSuccess {Number}     count
-   *        Number of priority results in the current json response
+   *        Number of status results  in the current json response
    *
    * @apiSuccessExample {json} Success-Response:
    *    HTTP/1.1 200 OK
    *    {
-   *      "priorities": [
-   *           {
-   *             "name": "Low",
+   *      "statuses": [
+   *         {
+   *            "name": "Open",
+   *            "weight": -5,
+   *            "color": "#0D47A1",
+   *            "_id": "592029e5e8dd8e00048c180d",
+   *             "createdAt": "2017-05-20T11:35:01.059Z",
+   *             "updatedAt": "2017-05-20T11:35:01.059Z",
+   *             "uri": "https://dawasco.herokuapp.com/statuses/592029e5e8dd8e00048c180d"
+   *         },
+   *         {
+   *             "name": "In Progress",
    *             "weight": 0,
+   *             "color": "#F9A825",
+   *             "_id": "592029e5e8dd8e00048c180e",
+   *             "createdAt": "2017-05-20T11:35:01.334Z",
+   *             "updatedAt": "2017-05-20T11:35:01.334Z",
+   *             "uri": "https://dawasco.herokuapp.com/statuses/592029e5e8dd8e00048c180e"
+   *         },
+   *         {
+   *             "name": "Closed",
+   *             "weight": 5,
    *             "color": "#1B5E20",
-   *             "_id": "592029e5e8dd8e00048c1816",
-   *             "createdAt": "2017-05-20T11:35:01.586Z",
-   *             "updatedAt": "2017-05-20T11:35:01.586Z",
-   *             "uri": "https://dawasco.herokuapp.com/priorities/592029e5e8dd8e00048c1816"
-   *         },
-   *          {
-   *              "name": "Normal",
-   *              "weight": 5,
-   *              "color": "#4CAF50",
-   *              "_id": "592029e5e8dd8e00048c1817",
-   *              "createdAt": "2017-05-20T11:35:01.601Z",
-   *              "updatedAt": "2017-05-20T11:35:01.601Z",
-   *             "uri": "https://dawasco.herokuapp.com/priorities/592029e5e8dd8e00048c1817"
-   *          },
-   *          {
-   *             "name": "Medium",
-   *             "weight": 10,
-   *             "color": "#FFC107",
-   *             "_id": "592029e5e8dd8e00048c1818",
-   *             "createdAt": "2017-05-20T11:35:01.615Z",
-   *             "updatedAt": "2017-05-20T11:35:01.615Z",
-   *             "uri": "https://dawasco.herokuapp.com/priorities/592029e5e8dd8e00048c1818"
-   *         },
-   *         {
-   *             "name": "High",
-   *             "weight": 15,
-   *             "color": "#FF9800",
-   *             "_id": "592029e5e8dd8e00048c1819",
-   *             "createdAt": "2017-05-20T11:35:01.625Z",
-   *             "updatedAt": "2017-05-20T11:35:01.625Z",
-   *             "uri": "https://dawasco.herokuapp.com/priorities/592029e5e8dd8e00048c1819"
-   *         },
-   *         {
-   *             "name": "Critical",
-   *             "weight": 20,
-   *             "color": "#F44336",
-   *             "_id": "592029e5e8dd8e00048c181a",
-   *             "createdAt": "2017-05-20T11:35:01.636Z",
-   *             "updatedAt": "2017-05-20T11:35:01.636Z",
-   *             "uri": "https://dawasco.herokuapp.com/priorities/592029e5e8dd8e00048c181a"
+   *             "_id": "592029e5e8dd8e00048c180f",
+   *             "createdAt": "2017-05-20T11:35:01.380Z",
+   *             "updatedAt": "2017-05-20T11:35:01.380Z",
+   *             "uri": "https://dawasco.herokuapp.com/statuses/592029e5e8dd8e00048c180f"
    *         }
    *      ],
    *      "pages": 1,
-   *      "count": 5
+   *      "count": 3
    *   }
+   *
    *
    * @apiError  AuthorizationHeaderRequired  Authorization header is required
    *
@@ -168,7 +151,7 @@ function priorityRouter(options) {
    *      "error":{}
    *    }
    *
-   * @apiError  JWTExpired                   Authorization token has expired
+   * @apiError JWTExpired     Authorization token has expired
    *
    * @apiErrorExample  {json}   Error-Response:
    *    HTTP/1.1 403 Forbidden
@@ -178,13 +161,13 @@ function priorityRouter(options) {
    *      "error":{}
    *    }
    */
-  router.get('/priorities', preIndexMiddlewares);
+  router.get('/statuses', preIndexMiddlewares);
 
 
   /**
-   * @api {post} /priorities Create Priority
-   * @apiGroup Priority
-   * @apiName PostPriority
+   * @api {post} /statuses Create Status
+   * @apiGroup Status
+   * @apiName PostStatus
    * @apiVersion 0.1.0
    *
    * @apiHeader {String}      Accept
@@ -194,45 +177,48 @@ function priorityRouter(options) {
    * @apiHeader {String}      Content-Type
    *        Sent content type
    *
-   * @apiParam   {String}     name
-   *        Unique Human readable name of the priority e.g High, Low, Medium.
-   * @apiParam   {Number}     weight
-   *        Weight of the priority to help in ordering service request(issue)
-   *        based on priority.
-   * @apiParam   {String}     color
-   *        A color code used to differentiate a service request priority visually.
+   *
+   * @apiParam  {String}      name
+   *        Human readable name of the status e.g Open, In Progress, Resolved.
+   * @apiParam  {Number}      weight
+   *        Weight of the status to help in ordering service request(issue) based on status
+   * @apiParam  {String}      [color]
+   *        A color code used to differentiate a service request status visually.
    *
    *
    * @apiSuccess {String}     name
-   *        Unique Human readable name of the priority e.g High, Low, Medium.
+   *        Status Name
    * @apiSuccess {Number}     weight
-   *        Weight of the priority to help in ordering service request(issue)
-   *        based on priority.
+   *        Weight of the status to help in ordering service request(issue) based on status
    * @apiSuccess {String}     color
-   *        A color code used to differentiate a service request priority visually.
+   *        A color code used to differentiate a service request status visually.
    * @apiSuccess {ObjectId}   _id
-   *        Priority Id
+   *        Status Id
    * @apiSuccess {Timestamp}  createdAt
-   *        Priority creation date
+   *        Status creation date
    * @apiSuccess {Timestamp}  updatedAt
-   *        Priority updated date
+   *        Status updated date
    * @apiSuccess {String}     uri
-   *        Priority URI
+   *        Status URI
+   * @apiSuccess {Number}     pages
+   *        Number of results pages
+   * @apiSuccess {Number}     count
+   *        Number of status results  in the current json response
    *
    * @apiSuccessExample {json} Success-Response:
    *    HTTP/1.1 201 Created
    *    {
-   *        "name": "Very High",
-   *        "weight": 20,
+   *        "name": "Suspended",
+   *        "weight": 2,
    *        "color": "#0D47A1",
    *        "_id": "592029e5e8dd8e00048c180d",
    *        "createdAt": "2017-05-20T11:35:01.059Z",
    *        "updatedAt": "2017-05-20T11:35:01.059Z",
-   *       "uri": "https://dawasco.herokuapp.com/priorities/592029e5e8dd8e00048c180d"
-   *   }
+   *        "uri": "https://dawasco.herokuapp.com/statuses/597acd4932494800041ed7b2"
+   *     }
+   *
    *
    * @apiError  AuthorizationHeaderRequired  Authorization header is required
-   *
    *
    * @apiErrorExample   {json} Error-Response:
    *    HTTP/1.1 403 Forbidden
@@ -242,7 +228,7 @@ function priorityRouter(options) {
    *      "error":{}
    *    }
    *
-   * @apiError  JWTExpired                   Authorization token has expired
+   * @apiError JWTExpired     Authorization token has expired
    *
    * @apiErrorExample  {json}   Error-Response:
    *    HTTP/1.1 403 Forbidden
@@ -252,237 +238,139 @@ function priorityRouter(options) {
    *      "error":{}
    *    }
    */
-  router.post('/priorities', preCreateMiddlewares);
+  router.post('/statuses', preCreateMiddlewares);
 
 
   /**
-   * @api {get}   /priorities/:id   Get Priority
-   * @apiGroup Priority
-   * @apiName GetPriority
+   * @api {get} /statuses/:id Get Status
+   * @apiGroup Status
+   * @apiName GetStatus
    * @apiVersion 0.1.0
    *
    * @apiHeader {String}      Accept
    *        Accept value
    * @apiHeader {String}      Authorization
    *        Authorization token
+   *
    *
    * @apiParam {ObjectId}     id
-   *        Priority unique ID.
+   *        Status unique ID.
+   *
    *
    * @apiSuccess {String}     name
-   *        Unique Human readable name of the priority e.g High, Low, Medium.
+   *        Status Name
    * @apiSuccess {Number}     weight
-   *        Weight of the priority to help in ordering service request(issue)
-   *        based on priority.
+   *        Weight of the status to help in ordering service request(issue) based on status
    * @apiSuccess {String}     color
-   *        A color code used to differentiate a service request priority visually.
+   *        A color code used to differentiate a service request status visually.
    * @apiSuccess {ObjectId}   _id
-   *        Priority Id
+   *        Status Id
    * @apiSuccess {Timestamp}  createdAt
-   *        Priority creation date
+   *        Status creation date
    * @apiSuccess {Timestamp}  updatedAt
-   *        Priority updated date
+   *        Status updated date
    * @apiSuccess {String}     uri
-   *        Priority URI
+   *        Status URI
    *
    * @apiSuccessExample {json} Success-Response:
    *    HTTP/1.1 200 OK
    *    {
-   *       "name": "Low",
-   *       "weight": 0,
-   *       "color": "#1B5E20",
-   *       "_id": "592029e5e8dd8e00048c1816",
-   *       "createdAt": "2017-05-20T11:35:01.059Z",
-   *       "updatedAt": "2017-05-20T11:35:01.059Z",
-   *       "uri": "https://dawasco.herokuapp.com/priorities/592029e5e8dd8e00048c1816"
-   *     }
-   *
-   * @apiError JWTExpired     Authorization token has expired
-   *
-   * @apiErrorExample  {json}   Error-Response:
-   *    HTTP/1.1 403 Forbidden
-   *    {
-   *      "success":false,
-   *      "message :"jwt expired",
-   *      "error":{}
-   *    }
-   *
-   */
-  router.get('/priorities/:id', preShowMiddlewares);
-
-
-  /**
-   * @api {put}   /priorities/:id   Update(PUT) Priority
-   * @apiGroup Priority
-   * @apiName  PutPriority
-   * @apiVersion 0.1.0
-   *
-   * @apiHeader {String}      Accept
-   *        Accept value
-   * @apiHeader {String}      Authorization
-   *        Authorization token
-   * @apiHeader {String}      Content-Type
-   *        Sent content type
-   *
-   * @apiParam   {ObjectId}   id
-   *        Priority unique ID.
-   * @apiParam   {String}     name
-   *        Unique Human readable name of the priority e.g High, Low, Medium.
-   * @apiParam   {Number}     weight
-   *        Weight of the priority to help in ordering service request(issue)
-   *        based on priority.
-   * @apiParam   {String}     color
-   *        A color code used to differentiate a service request priority visually.
-   *
-   * @apiSuccess {String}     name
-   *        Unique Human readable name of the priority e.g High, Low, Medium.
-   * @apiSuccess {Number}     weight
-   *        Weight of the priority to help in ordering service request(issue)
-   *        based on priority.
-   * @apiSuccess {String}     color
-   *        A color code used to differentiate a service request priority visually.
-   * @apiSuccess {ObjectId}   _id
-   *        Priority Id
-   * @apiSuccess {Timestamp}  createdAt
-   *        Priority creation date
-   * @apiSuccess {Timestamp}  updatedAt
-   *        Priority updated date
-   * @apiSuccess {String}     uri
-   *        Priority URI
-   *
-   * @apiSuccessExample {json} Success-Response:
-   *    HTTP/1.1 200 OK
-   *    {
-   *       "name": "Low",
-   *       "weight": 0,
-   *       "color": "#1B5E21",
-   *       "_id": "592029e5e8dd8e00048c1816",
-   *       "createdAt": "2017-05-20T11:35:01.059Z",
-   *       "updatedAt": "2017-05-20T11:35:01.059Z",
-   *       "uri": "https://dawasco.herokuapp.com/priorities/592029e5e8dd8e00048c1816"
-   *     }
-   *
-   * @apiError JWTExpired     Authorization token has expired
-   *
-   * @apiErrorExample  {json}   Error-Response:
-   *    HTTP/1.1 403 Forbidden
-   *    {
-   *      "success":false,
-   *      "message :"jwt expired",
-   *      "error":{}
-   *    }
-   *
-   */
-  router.put('/priorities/:id', preUpdateMiddlewares);
-
-
-  /**
-   * @api {patch}   /priorities/:id   Update(PATCH) Priority
-   * @apiGroup Priority
-   * @apiName  PatchPriority
-   * @apiVersion 0.1.0
-   *
-   * @apiHeader {String}      Accept
-   *        Accept value
-   * @apiHeader {String}      Authorization
-   *        Authorization token
-   * @apiHeader {String}      Content-Type
-   *        Sent content type
-   *
-   * @apiParam   {ObjectId}   id
-   *        Priority unique ID.
-   * @apiParam   {String}     name
-   *        Unique Human readable name of the priority e.g High, Low, Medium.
-   * @apiParam   {Number}     weight
-   *        Weight of the priority to help in ordering service request(issue)
-   *        based on priority.
-   * @apiParam   {String}     color
-   *        A color code used to differentiate a service request priority visually.
-   *
-   * @apiSuccess {String}     name
-   *        Unique Human readable name of the priority e.g High, Low, Medium.
-   * @apiSuccess {Number}     weight
-   *        Weight of the priority to help in ordering service request(issue)
-   *        based on priority.
-   * @apiSuccess {String}     color
-   *        A color code used to differentiate a service request priority visually.
-   * @apiSuccess {ObjectId}   _id
-   *        Priority Id
-   * @apiSuccess {Timestamp}  createdAt
-   *        Priority creation date
-   * @apiSuccess {Timestamp}  updatedAt
-   *        Priority updated date
-   * @apiSuccess {String}     uri
-   *        Priority URI
-   *
-   * @apiSuccessExample {json} Success-Response:
-   *    HTTP/1.1 200 OK
-   *    {
-   *       "name": "Low",
-   *       "weight": 0,
-   *       "color": "#1B5E21",
-   *       "_id": "592029e5e8dd8e00048c1816",
-   *       "createdAt": "2017-05-20T11:35:01.059Z",
-   *       "updatedAt": "2017-05-20T11:35:01.059Z",
-   *       "uri": "https://dawasco.herokuapp.com/priorities/592029e5e8dd8e00048c1816"
-   *     }
-   *
-   * @apiError JWTExpired     Authorization token has expired
-   *
-   * @apiErrorExample  {json}   Error-Response:
-   *    HTTP/1.1 403 Forbidden
-   *    {
-   *      "success":false,
-   *      "message :"jwt expired",
-   *      "error":{}
-   *    }
-   *
-   */
-  router.patch('/priorities/:id', preUpdateMiddlewares);
-
-
-  /**
-   * @api {delete}  /priorities/:id  Delete Priority
-   * @apiGroup Priority
-   * @apiName  DeletePriority
-   * @apiVersion 0.1.0
-   *
-   * @apiHeader {String}      Accept
-   *        Accept value
-   * @apiHeader {String}      Authorization
-   *        Authorization token
-   *
-   * @apiParam {ObjectId}     id
-   *          Priority unique ID.
-   *
-   * @apiSuccess {String}     name
-   *        Unique Human readable name of the priority e.g High, Low, Medium.
-   * @apiSuccess {Number}     weight
-   *        Weight of the priority to help in ordering service request(issue)
-   *        based on priority.
-   * @apiSuccess {String}     color
-   *        A color code used to differentiate a service request priority visually.
-   * @apiSuccess {ObjectId}   _id
-   *        Priority Id
-   * @apiSuccess {Timestamp}  createdAt
-   *        Priority creation date
-   * @apiSuccess {Timestamp}  updatedAt
-   *        Priority updated date
-   * @apiSuccess {String}     uri
-   *        Priority URI
-   *
-   *
-   * @apiSuccessExample {json} Success-Response:
-   *    HTTP/1.1 200 OK
-   *    {
-   *       "name": "Example",
-   *       "weight": 0,
+   *       "name": "Open",
+   *       "weight": -5,
    *       "color": "#0D47A1",
-   *       "_id": "597cd4aa3118df0004bc3f87",
+   *       "_id": "592029e5e8dd8e00048c180d",
    *       "createdAt": "2017-05-20T11:35:01.059Z",
    *       "updatedAt": "2017-05-20T11:35:01.059Z",
-   *       "uri": "https://dawasco.herokuapp.com/priorities/597cd4aa3118df0004bc3f87"
+   *       "uri": "https://dawasco.herokuapp.com/statuses/592029e5e8dd8e00048c180d"
    *     }
+   *
+   *
+   * @apiError  AuthorizationHeaderRequired  Authorization header is required
+   *
+   * @apiErrorExample   {json} Error-Response:
+   *    HTTP/1.1 403 Forbidden
+   *    {
+   *      "success":false,
+   *      "message :"Authorization header required",
+   *      "error":{}
+   *    }
+   * @apiError JWTExpired     Authorization token has expired
+   *
+   * @apiErrorExample  {json}   Error-Response:
+   *    HTTP/1.1 403 Forbidden
+   *    {
+   *      "success":false,
+   *      "message :"jwt expired",
+   *      "error":{}
+   *    }
+   *
+   */
+  router.get('/statuses/:id', preShowMiddlewares);
+
+
+  /**
+   * @api {put} /statuses/:id Update(PUT) Status
+   * @apiGroup Status
+   * @apiName PutStatus
+   * @apiVersion 0.1.0
+   *
+   * @apiHeader {String}      Accept
+   *        Accept value
+   * @apiHeader {String}      Authorization
+   *        Authorization token
+   * @apiHeader {String}      Content-Type
+   *        Sent content type
+   *
+   *
+   * @apiParam   {ObjectId}   id
+   *        Status unique ID.
+   *
+   * @apiParam  {String}      [name]
+   *        Human readable name of the status e.g Open, In Progress, Resolved.
+   * @apiParam  {Number}      [weight]
+   *        Weight of the status to help in ordering service request(issue) based on status
+   * @apiParam  {String}      [color]
+   *        A color code used to differentiate a service request status visually.
+   *
+   *
+   * @apiSuccess {String}     name
+   *        Status Name
+   * @apiSuccess {Number}     weight
+   *        Weight of the status to help in ordering service request(issue) based on status
+   * @apiSuccess {String}     color
+   *        A color code used to differentiate a service request status visually.
+   * @apiSuccess {ObjectId}   _id
+   *        Status Id
+   * @apiSuccess {Timestamp}  createdAt
+   *        Status creation date
+   * @apiSuccess {Timestamp}  updatedAt
+   *        Status updated date
+   * @apiSuccess {String}     uri
+   *        Status URI
+   *
+   * @apiSuccessExample {json} Success-Response:
+   *    HTTP/1.1 200 OK
+   *    {
+   *       "name": "Resolved",
+   *       "weight": -5,
+   *       "color": "#0D47A1",
+   *       "_id": "592029e5e8dd8e00048c180d",
+   *       "createdAt": "2017-05-20T11:35:01.059Z",
+   *       "updatedAt": "2017-05-20T11:35:01.059Z",
+   *       "uri": "https://dawasco.herokuapp.com/statuses/592029e5e8dd8e00048c180d"
+   *     }
+   *
+   *
+   * @apiError  AuthorizationHeaderRequired  Authorization header is required
+   *
+   * @apiErrorExample   {json} Error-Response:
+   *    HTTP/1.1 403 Forbidden
+   *    {
+   *      "success":false,
+   *      "message :"Authorization header required",
+   *      "error":{}
+   *    }
+   *
    *
    * @apiError JWTExpired     Authorization token has expired
    *
@@ -495,7 +383,153 @@ function priorityRouter(options) {
    *    }
    *
    */
-  router.delete('/priorities/:id', preDeleteMiddlewares);
+  router.put('/statuses/:id', preUpdateMiddlewares);
+
+
+  /**
+   * @api {patch} /statuses/:id Update(PATCH) Status
+   * @apiGroup Status
+   * @apiName PatchStatus
+   * @apiVersion 0.1.0
+   *
+   * @apiHeader {String}      Accept
+   *        Accept value
+   * @apiHeader {String}      Authorization
+   *        Authorization token
+   * @apiHeader {String}      Content-Type
+   *        Sent content type
+   *
+   *
+   * @apiParam {ObjectId}     id
+   *        Status unique ID.
+   *
+   * @apiParam  {String}      [name]
+   *        Human readable name of the status e.g Open, In Progress, Resolved.
+   * @apiParam  {Number}      [weight]
+   *        Weight of the status to help in ordering service request(issue) based on status
+   * @apiParam  {String}      [color]
+   *        A color code used to differentiate a service request status visually.
+   *
+   *
+   * @apiSuccess {String}     name
+   *        Status Name
+   * @apiSuccess {Number}     weight
+   *        Weight of the status to help in ordering service request(issue) based on status
+   * @apiSuccess {String}     color
+   *        A color code used to differentiate a service request status visually.
+   * @apiSuccess {ObjectId}   _id
+   *        Status Id
+   * @apiSuccess {Timestamp}  createdAt
+   *        Status creation date
+   * @apiSuccess {Timestamp}  updatedAt
+   *        Status updated date
+   * @apiSuccess {String}     uri
+   *        Status URI
+   *
+   * @apiSuccessExample {json} Success-Response:
+   *    HTTP/1.1 200 OK
+   *    {
+   *       "name": "Resolved",
+   *       "weight": -5,
+   *       "color": "#0D47A1",
+   *       "_id": "592029e5e8dd8e00048c180d",
+   *       "createdAt": "2017-05-20T11:35:01.059Z",
+   *       "updatedAt": "2017-05-20T11:35:01.059Z",
+   *       "uri": "https://dawasco.herokuapp.com/statuses/592029e5e8dd8e00048c180d"
+   *     }
+   *
+   *
+   * @apiError  AuthorizationHeaderRequired  Authorization header is required
+   *
+   * @apiErrorExample   {json} Error-Response:
+   *    HTTP/1.1 403 Forbidden
+   *    {
+   *      "success":false,
+   *      "message :"Authorization header required",
+   *      "error":{}
+   *    }
+   *
+   *
+   * @apiError JWTExpired     Authorization token has expired
+   *
+   * @apiErrorExample  {json}   Error-Response:
+   *    HTTP/1.1 403 Forbidden
+   *    {
+   *      "success":false,
+   *      "message :"jwt expired",
+   *      "error":{}
+   *    }
+   *
+   */
+  router.patch('/statuses/:id', preUpdateMiddlewares);
+
+
+  /**
+   * @api {delete} /statuses/:id Delete Status
+   * @apiGroup Status
+   * @apiName DeleteStatus
+   * @apiVersion 0.1.0
+   *
+   * @apiHeader {String}      Accept
+   *        Accept value
+   * @apiHeader {String}      Authorization
+   *        Authorization token
+   *
+   *
+   * @apiParam {ObjectId}     id
+   *        Status unique ID.
+   *
+   *
+   * @apiSuccess {String}     name
+   *        Status Name
+   * @apiSuccess {Number}     weight
+   *        Weight of the status to help in ordering service request(issue) based on status
+   * @apiSuccess {String}     color
+   *        A color code used to differentiate a service request status visually.
+   * @apiSuccess {ObjectId}   _id
+   *        Status Id
+   * @apiSuccess {Timestamp}  createdAt
+   *        Status creation date
+   * @apiSuccess {Timestamp}  updatedAt
+   *        Status updated date
+   * @apiSuccess {String}     uri
+   *        Status URI
+   *
+   * @apiSuccessExample {json} Success-Response:
+   *    HTTP/1.1 200 OK
+   *    {
+   *       "name": "Resolved",
+   *       "weight": -5,
+   *       "color": "#0D47A1",
+   *       "_id": "592029e5e8dd8e00048c180d",
+   *       "createdAt": "2017-05-20T11:35:01.059Z",
+   *       "updatedAt": "2017-05-20T11:35:01.059Z",
+   *       "uri": "https://dawasco.herokuapp.com/statuses/592029e5e8dd8e00048c180d"
+   *     }
+   *
+   * @apiError  AuthorizationHeaderRequired  Authorization header is required
+   *
+   * @apiErrorExample   {json} Error-Response:
+   *    HTTP/1.1 403 Forbidden
+   *    {
+   *      "success":false,
+   *      "message :"Authorization header required",
+   *      "error":{}
+   *    }
+   *
+   * @apiError JWTExpired     Authorization token has expired
+   *
+   * @apiErrorExample  {json}   Error-Response:
+   *    HTTP/1.1 403 Forbidden
+   *    {
+   *      "success":false,
+   *      "message :"jwt expired",
+   *      "error":{}
+   *    }
+   *
+   */
+  router.delete('/statuses/:id', preDeleteMiddlewares);
+
 
   return router;
 }
@@ -504,4 +538,4 @@ function priorityRouter(options) {
  * exports priorities router
  * @function
  */
-module.exports = priorityRouter;
+module.exports = statusRouter;
