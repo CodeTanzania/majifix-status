@@ -1,9 +1,9 @@
 'use strict';
 
 /**
- * Priority model specification
+ * Status model specification
  *
- * @description :: Server-side model specification for Priority
+ * @description :: Server-side model specification for Status
  */
 
 //dependencies
@@ -11,15 +11,16 @@ const path = require('path');
 const faker = require('faker');
 const expect = require('chai').expect;
 const randomColor = require('randomcolor');
-const Priority = require(path.join(__dirname, '..', '..', '..', 'models',
-  'priority'));
-let priority;
+const Status = require(path.join(__dirname, '..', '..', '..', 'models',
+  'status'));
 
-describe('Priority', function () {
 
-  it('should be able to create new priority', function (done) {
+describe('Status', function () {
+  let status;
 
-    priority = {
+  it('should be able to create new status', function (done) {
+
+    status = {
       name: faker.company.companyName(),
       weight: faker.random.number({
         min: -20,
@@ -28,8 +29,8 @@ describe('Priority', function () {
       color: randomColor().toUpperCase()
     };
 
-    Priority
-      .create(priority, function (error, created) {
+    Status
+      .create(status, function (error, created) {
 
         expect(error).to.not.exist;
         expect(created).to.exist;
@@ -39,12 +40,12 @@ describe('Priority', function () {
         expect(created.weight).to.exist;
         expect(created.color).to.exist;
 
-        expect(created.name).to.be.equal(priority.name);
-        expect(created.weight).to.be.equal(priority.weight);
-        expect(created.color).to.be.equal(priority.color);
+        expect(created.name).to.be.equal(status.name);
+        expect(created.weight).to.be.equal(status.weight);
+        expect(created.color).to.be.equal(status.color);
 
-        //update priority reference
-        priority = created;
+        //update status reference
+        status = created;
 
         done(error, created);
 
@@ -53,10 +54,10 @@ describe('Priority', function () {
   });
 
 
-  it('should be able to find existing priority', function (done) {
+  it('should be able to find existing status', function (done) {
 
-    Priority
-      .findById(priority._id, function (error, found) {
+    Status
+      .findById(status._id, function (error, found) {
 
         expect(error).to.not.exist;
         expect(found).to.exist;
@@ -67,10 +68,10 @@ describe('Priority', function () {
         expect(found.weight).to.exist;
         expect(found.color).to.exist;
 
-        expect(found._id).to.be.eql(priority._id);
-        expect(found.name).to.be.equal(priority.name);
-        expect(found.weight).to.be.equal(priority.weight);
-        expect(found.color).to.be.equal(priority.color);
+        expect(found._id).to.be.eql(status._id);
+        expect(found.name).to.be.equal(status.name);
+        expect(found.weight).to.be.equal(status.weight);
+        expect(found.color).to.be.equal(status.color);
 
         done(error, found);
 
@@ -79,14 +80,14 @@ describe('Priority', function () {
   });
 
 
-  it('should be able to update existing priority', function (done) {
+  it('should be able to update existing status', function (done) {
 
     const updates = {
       color: randomColor().toUpperCase()
     };
 
-    Priority
-      .findByIdAndUpdate(priority._id, updates, {
+    Status
+      .findByIdAndUpdate(status._id, updates, {
         upsert: true,
         new: true
       }, function (error, updated) {
@@ -100,13 +101,13 @@ describe('Priority', function () {
         expect(updated.weight).to.exist;
         expect(updated.color).to.exist;
 
-        expect(updated._id).to.be.eql(priority._id);
-        expect(updated.name).to.be.equal(priority.name);
-        expect(updated.weight).to.be.equal(priority.weight);
+        expect(updated._id).to.be.eql(status._id);
+        expect(updated.name).to.be.equal(status.name);
+        expect(updated.weight).to.be.equal(status.weight);
         expect(updated.color).to.be.equal(updates.color);
 
-        //update priority references
-        priority = updated;
+        //update status references
+        status = updated;
 
         done(error, updated);
 
@@ -115,30 +116,30 @@ describe('Priority', function () {
   });
 
 
-  it('should be able to list existing priorities', function (done) {
+  it('should be able to list existing statuses', function (done) {
 
-    Priority
+    Status
       .paginate({
         page: 1,
         limit: 10
-      }, function (error, priorities, pages, total) {
+      }, function (error, statuses, pages, total) {
 
         expect(error).to.not.exist;
         expect(pages).to.exist;
-        expect(priorities).to.exist;
+        expect(statuses).to.exist;
         expect(total).to.exist;
 
         //TODO application specific assertions
 
-        done(error, priorities);
+        done(error, statuses);
       });
 
   });
 
 
-  it('should be able to find default priority', function (done) {
+  it('should be able to find default status', function (done) {
 
-    Priority
+    Status
       .findDefault(function (error, found) {
 
         expect(error).to.not.exist;
@@ -157,10 +158,10 @@ describe('Priority', function () {
   });
 
 
-  it('should be able to delete existing priority', function (done) {
+  it('should be able to delete existing status', function (done) {
 
-    Priority
-      .findByIdAndRemove(priority._id, function (error, removed) {
+    Status
+      .findByIdAndRemove(status._id, function (error, removed) {
 
         expect(error).to.not.exist;
         expect(removed).to.exist;
@@ -171,10 +172,10 @@ describe('Priority', function () {
         expect(removed.weight).to.exist;
         expect(removed.color).to.exist;
 
-        expect(removed._id).to.be.eql(priority._id);
-        expect(removed.name).to.be.equal(priority.name);
-        expect(removed.weight).to.be.equal(priority.weight);
-        expect(removed.color).to.be.equal(priority.color);
+        expect(removed._id).to.be.eql(status._id);
+        expect(removed.name).to.be.equal(status.name);
+        expect(removed.weight).to.be.equal(status.weight);
+        expect(removed.color).to.be.equal(status.color);
 
         done(error, removed);
 
@@ -182,12 +183,11 @@ describe('Priority', function () {
 
   });
 
-  it('should be able to soft delete a priority');
+  it('should be able to soft delete a status');
 
   describe('Search', function () {
 
-
-    let priority = {
+    let status = {
       name: faker.company.companyName(),
       weight: faker.random.number({
         min: -20,
@@ -198,21 +198,21 @@ describe('Priority', function () {
 
 
     before(function (done) {
-      Priority.remove(done);
+      Status.remove(done);
     });
 
     before(function (done) {
-      Priority.create(priority, function (error, created) {
-        priority = created;
+      Status.create(status, function (error, created) {
+        status = created;
         done(error, created);
       });
     });
 
-    it('should be able to search priority group by its fields',
+    it('should be able to search status by its fields',
       function (done) {
 
-        Priority
-          .search(priority.name, function (error, results) {
+        Status
+          .search(status.name, function (error, results) {
 
             expect(error).to.not.exist;
             expect(results).to.exist;
@@ -225,9 +225,9 @@ describe('Priority', function () {
             expect(found.weight).to.exist;
             expect(found.color).to.exist;
 
-            expect(found.name).to.be.equal(priority.name);
-            expect(found.weight).to.be.equal(priority.weight);
-            expect(found.color).to.be.equal(priority.color);
+            expect(found.name).to.be.equal(status.name);
+            expect(found.weight).to.be.equal(status.weight);
+            expect(found.color).to.be.equal(status.color);
 
             done(error, results);
 
@@ -238,7 +238,7 @@ describe('Priority', function () {
 
 
   after(function (done) {
-    Priority.remove(done);
+    Status.remove(done);
   });
 
 });
