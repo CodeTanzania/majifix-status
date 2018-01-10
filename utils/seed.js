@@ -13,8 +13,7 @@
 //  dependencies
 const path = require('path');
 const _ = require('lodash');
-const Status = require(path.join(__dirname, '..', 'models',
-  'status'));
+const Status = require(path.join(__dirname, '..', 'models', 'status'));
 
 module.exports = function (statuses, done) {
 
