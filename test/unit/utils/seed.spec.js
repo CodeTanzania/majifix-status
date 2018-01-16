@@ -7,6 +7,8 @@ const path = require('path');
 const expect = require('chai').expect;
 const faker = require('faker');
 const seed = require(path.join(__dirname, '..', '..', '..', 'utils', 'seed'));
+const Status = require(path.join(__dirname, '..', '..', '..', 'models',
+  'status'));
 
 describe('Seed function', () => {
 
@@ -43,11 +45,45 @@ describe('Seed function', () => {
     }];
 
     seed(statuses, function (error, results) {
-      expect(error).not.exist;
+      expect(error).not.to.exist;
       expect(results).to.exist;
       expect(results).to.be.an('array');
       expect(results).to.have.lengthOf(statuses.length);
       done();
+    });
+  });
+
+  it('should save defaults statuses when only done callback is provided', (
+    done) => {
+    seed(function (error, results) {
+      expect(error).not.to.exist;
+      expect(results).to.exist;
+
+      Status.findOne({
+        name: 'Open'
+      }, function (error, result) {
+        expect(result.name).to.exist;
+        expect(result.color).to.exist;
+        expect(error).not.to.exist;
+        done();
+      });
+    });
+  });
+
+  it('should save defaults when statuses array is empty', (done) => {
+
+    seed([], function (error, results) {
+      expect(error).not.to.exist;
+      expect(results).to.exist;
+
+      Status.findOne({
+        name: 'Open'
+      }, function (error, result) {
+        expect(result.name).to.exist;
+        expect(result.color).to.exist;
+        expect(error).not.to.exist;
+        done();
+      });
     });
   });
 
