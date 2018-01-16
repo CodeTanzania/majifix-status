@@ -19,8 +19,11 @@ const Status = require(path.join(__dirname, '..', 'models', 'status'));
 
 /**
  * Run parallel saving statuses into the database
+ * @function
  * @param {Array} statuses
  * @param {Function} done
+ * @version 0.1.0
+ * @since 0.1.0
  */
 function saveStatuses(statuses, done) {
 
@@ -69,14 +72,14 @@ module.exports = function (statuses, done) {
 
 
   if (arguments.length === 1 && _.isFunction(arguments[0])) {
-    // seed defaults statuses
+    // save defaults statuses
     return saveStatuses(defaultStatuses, arguments[0]);
   }
 
   statuses = _.compact(_.concat([], statuses));
 
   if (_.isEmpty(statuses)) {
-    // seed defaults seed defaults statuses
+    // save defaults statuses
     return saveStatuses(defaultStatuses, done);
   }
 
