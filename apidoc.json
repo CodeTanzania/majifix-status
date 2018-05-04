@@ -1,0 +1,13 @@
+{
+  "name": "majifix-status",
+  "version": "1.0.0",
+  "description": "A representation of an entity which provides a way to set flags on service requests(issues) in order to track their progress.",
+  "title": "MajiFix Status",
+  "url": "https://majifix-status.herokuapp.com/v1.0.0",
+  "sampleUrl": "https://majifix-status.herokuapp.com/v1.0.0",
+  "template":
+  {
+    "withCompare": true,
+    "withGenerator": true
+  }
+}

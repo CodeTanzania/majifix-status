@@ -1,34 +1,59 @@
 'use strict';
 
+
 /**
- * @module majifix status
- * @version 0.1.0
- * @description majifix status library
+ * @name majifix-status
+ * @description A representation of an entity which provides 
+ * a way to set flags on service requests(issues) in order 
+ * to track their progress.
+ * 
  * @author Benson Maruchu <benmaruchu@gmail.com>
- * @public
+ * @author lally elias <lallyelias87@mail.com>
+ * @since  0.1.0
+ * @version 0.1.0
+ * @example
+ *
+ * const { app } = require('majifix-status');
+ *
+ * ...
+ *
+ * app.start();
+ *
  */
 
+
+/* dependencies */
 const path = require('path');
-let mongoose = require('mongoose');
-const _ = require('lodash');
-const Model = require(path.join(__dirname, 'models', 'status'));
-const statusRouter = require(path.join(__dirname, 'http', 'router'));
-const seed = require(path.join(__dirname, 'utils', 'seed'));
+const app = require('@lykmapipo/express-common');
 
 
-module.exports = function (options) {
+/* import models */
+const Status =
+  require(path.join(__dirname, 'lib', 'status.model'));
 
-  options = _.merge({}, options);
 
-  mongoose = _.get(options, 'mongoose', mongoose);
+/* import routers*/
+const router =
+  require(path.join(__dirname, 'lib', 'http.router'));
 
-  const routerOptions = _.get(options, 'router', {});
 
-  const Router = statusRouter(routerOptions);
+/* export status model */
+exports.Status = Status;
 
-  return {
-    model: Model,
-    router: Router,
-    seed: seed
-  };
-};
+
+/* export status router */
+exports.router = router;
+
+
+/* export app */
+Object.defineProperty(exports, 'app', {
+  get() {
+
+    //TODO bind oauth middlewares authenticate, token, authorize
+
+    /* bind status router */
+    app.mount(router);
+    return app;
+  }
+
+});
