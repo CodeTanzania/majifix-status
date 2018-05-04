@@ -6,7 +6,7 @@ const faker = require('faker');
 
 function sample(n = 3) {
   return {
-    name: faker.commerce.productName(),
+    name: (faker.hacker.ingverb() + ' ' + faker.hacker.noun()),
     weight: ((n % 5) * 5)
   };
 }
