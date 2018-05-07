@@ -4,12 +4,27 @@
 const path = require('path');
 const mongoose = require('mongoose');
 const { expect } = require('chai');
+const { Jurisdiction } = require('majifix-jurisdiction');
 const { Status } = require(path.join(__dirname, '..', '..'));
 
 describe('Status', function () {
 
+  let jurisdiction;
+
   before(function (done) {
     mongoose.connect('mongodb://localhost/majifix-status', done);
+  });
+
+  before(function (done) {
+    Jurisdiction.remove(done);
+  });
+
+  before(function (done) {
+    jurisdiction = Jurisdiction.fake();
+    jurisdiction.post(function (error, created) {
+      jurisdiction = created;
+      done(error, created);
+    });
   });
 
   before(function (done) {
@@ -23,6 +38,7 @@ describe('Status', function () {
     it('should be able to post', function (done) {
 
       status = Status.fake();
+      status.jurisdiction = jurisdiction;
 
       Status
         .post(status, function (error, created) {
@@ -30,6 +46,14 @@ describe('Status', function () {
           expect(created).to.exist;
           expect(created._id).to.eql(status._id);
           expect(created.name).to.eql(status.name);
+
+          //assert jurisdiction
+          expect(created.jurisdiction).to.exist;
+          expect(created.jurisdiction.code)
+            .to.eql(status.jurisdiction.code);
+          expect(created.jurisdiction.name)
+            .to.eql(status.jurisdiction.name);
+
           done(error, created);
         });
     });
@@ -58,6 +82,10 @@ describe('Status', function () {
 
   after(function (done) {
     Status.remove(done);
+  });
+
+  after(function (done) {
+    Jurisdiction.remove(done);
   });
 
 });

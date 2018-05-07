@@ -5,12 +5,27 @@ const path = require('path');
 const _ = require('lodash');
 const mongoose = require('mongoose');
 const { expect } = require('chai');
+const { Jurisdiction } = require('majifix-jurisdiction');
 const { Status } = require(path.join(__dirname, '..', '..'));
 
 describe('Status', function () {
 
+  let jurisdiction;
+
   before(function (done) {
     mongoose.connect('mongodb://localhost/majifix-status', done);
+  });
+
+  before(function (done) {
+    Jurisdiction.remove(done);
+  });
+
+  before(function (done) {
+    jurisdiction = Jurisdiction.fake();
+    jurisdiction.post(function (error, created) {
+      jurisdiction = created;
+      done(error, created);
+    });
   });
 
   before(function (done) {
@@ -22,8 +37,9 @@ describe('Status', function () {
     let status;
 
     before(function (done) {
-      const fake = Status.fake();
-      fake
+      status = Status.fake();
+      status.jurisdiction = jurisdiction;
+      status
         .post(function (error, created) {
           status = created;
           done(error, created);
@@ -36,6 +52,13 @@ describe('Status', function () {
           expect(error).to.not.exist;
           expect(found).to.exist;
           expect(found._id).to.eql(status._id);
+
+          //assert jurisdiction
+          expect(found.jurisdiction).to.exist;
+          expect(found.jurisdiction.code)
+            .to.eql(status.jurisdiction.code);
+          expect(found.jurisdiction.name)
+            .to.eql(status.jurisdiction.name);
           done(error, found);
         });
     });
@@ -56,7 +79,7 @@ describe('Status', function () {
 
           //...assert selection
           const fields = _.keys(found.toObject());
-          expect(fields).to.have.length(2);
+          expect(fields).to.have.length(3);
           _.map([
             'color',
             'createdAt',
@@ -88,6 +111,10 @@ describe('Status', function () {
 
   after(function (done) {
     Status.remove(done);
+  });
+
+  after(function (done) {
+    Jurisdiction.remove(done);
   });
 
 });

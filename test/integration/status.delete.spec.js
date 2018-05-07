@@ -4,12 +4,27 @@
 const path = require('path');
 const mongoose = require('mongoose');
 const { expect } = require('chai');
+const { Jurisdiction } = require('majifix-jurisdiction');
 const { Status } = require(path.join(__dirname, '..', '..'));
 
 describe('Status', function () {
 
+  let jurisdiction;
+
   before(function (done) {
     mongoose.connect('mongodb://localhost/majifix-status', done);
+  });
+
+  before(function (done) {
+    Jurisdiction.remove(done);
+  });
+
+  before(function (done) {
+    jurisdiction = Jurisdiction.fake();
+    jurisdiction.post(function (error, created) {
+      jurisdiction = created;
+      done(error, created);
+    });
   });
 
   before(function (done) {
@@ -18,30 +33,38 @@ describe('Status', function () {
 
   describe('static delete', function () {
 
-    let account;
+    let status;
 
     before(function (done) {
-      const fake = Status.fake();
-      fake
+      status = Status.fake();
+      status.jurisdiction = jurisdiction;
+      status
         .post(function (error, created) {
-          account = created;
+          status = created;
           done(error, created);
         });
     });
 
     it('should be able to delete', function (done) {
       Status
-        .del(account._id, function (error, deleted) {
+        .del(status._id, function (error, deleted) {
           expect(error).to.not.exist;
           expect(deleted).to.exist;
-          expect(deleted._id).to.eql(account._id);
+          expect(deleted._id).to.eql(status._id);
+
+          //assert jurisdiction
+          expect(deleted.jurisdiction).to.exist;
+          expect(deleted.jurisdiction.code)
+            .to.eql(status.jurisdiction.code);
+          expect(deleted.jurisdiction.name)
+            .to.eql(status.jurisdiction.name);
           done(error, deleted);
         });
     });
 
     it('should throw if not exists', function (done) {
       Status
-        .del(account._id, function (error, deleted) {
+        .del(status._id, function (error, deleted) {
           expect(error).to.exist;
           expect(error.status).to.exist;
           expect(error.message).to.be.equal('Not Found');
@@ -54,33 +77,33 @@ describe('Status', function () {
 
   describe('instance delete', function () {
 
-    let account;
+    let status;
 
     before(function (done) {
       const fake = Status.fake();
       fake
         .post(function (error, created) {
-          account = created;
+          status = created;
           done(error, created);
         });
     });
 
     it('should be able to delete', function (done) {
-      account
+      status
         .del(function (error, deleted) {
           expect(error).to.not.exist;
           expect(deleted).to.exist;
-          expect(deleted._id).to.eql(account._id);
+          expect(deleted._id).to.eql(status._id);
           done(error, deleted);
         });
     });
 
     it('should throw if not exists', function (done) {
-      account
+      status
         .del(function (error, deleted) {
           expect(error).to.not.exist;
           expect(deleted).to.exist;
-          expect(deleted._id).to.eql(account._id);
+          expect(deleted._id).to.eql(status._id);
           done();
         });
     });
@@ -89,6 +112,10 @@ describe('Status', function () {
 
   after(function (done) {
     Status.remove(done);
+  });
+
+  after(function (done) {
+    Jurisdiction.remove(done);
   });
 
 });
