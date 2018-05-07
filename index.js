@@ -34,12 +34,12 @@ const fields = [
   'name',
   'description',
   'version',
-  'homepage',
-  'contributors',
   'license',
+  'homepage',
   'repository',
   'bugs',
-  'sandbox'
+  'sandbox',
+  'contributors'
 ];
 const info = _.merge({}, _.pick(pkg, fields));
 
