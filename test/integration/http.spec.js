@@ -5,7 +5,7 @@ const path = require('path');
 const request = require('supertest');
 const mongoose = require('mongoose');
 const { expect } = require('chai');
-const { Status, app } = require(path.join(__dirname, '..', '..'));
+const { Status, app, info } = require(path.join(__dirname, '..', '..'));
 
 
 describe('Status', function () {
@@ -28,7 +28,7 @@ describe('Status', function () {
       status = Status.fake();
 
       request(app)
-        .post('/v1.0.0/statuses')
+        .post(`/v${info.version}/statuses`)
         .set('Accept', 'application/json')
         .set('Content-Type', 'application/json')
         .send(status)
@@ -51,7 +51,7 @@ describe('Status', function () {
     it('should handle HTTP GET on /statuses', function (done) {
 
       request(app)
-        .get('/v1.0.0/statuses')
+        .get(`/v${info.version}/statuses`)
         .set('Accept', 'application/json')
         .expect(200)
         .expect('Content-Type', /json/)
@@ -77,7 +77,7 @@ describe('Status', function () {
     it('should handle HTTP GET on /statuses/id:', function (done) {
 
       request(app)
-        .get(`/v1.0.0/statuses/${status._id}`)
+        .get(`/v${info.version}/statuses/${status._id}`)
         .set('Accept', 'application/json')
         .expect(200)
         .end(function (error, response) {
@@ -100,7 +100,7 @@ describe('Status', function () {
       const patch = status.fakeOnly('name');
 
       request(app)
-        .patch(`/v1.0.0/statuses/${status._id}`)
+        .patch(`/v${info.version}/statuses/${status._id}`)
         .set('Accept', 'application/json')
         .set('Content-Type', 'application/json')
         .send(patch)
@@ -126,7 +126,7 @@ describe('Status', function () {
       const put = status.fakeOnly('name');
 
       request(app)
-        .put(`/v1.0.0/statuses/${status._id}`)
+        .put(`/v${info.version}/statuses/${status._id}`)
         .set('Accept', 'application/json')
         .set('Content-Type', 'application/json')
         .send(put)
@@ -151,7 +151,7 @@ describe('Status', function () {
       done) {
 
       request(app)
-        .delete(`/v1.0.0/statuses/${status._id}`)
+        .delete(`/v${info.version}/statuses/${status._id}`)
         .set('Accept', 'application/json')
         .expect(200)
         .end(function (error, response) {

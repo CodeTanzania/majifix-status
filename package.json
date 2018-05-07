@@ -19,8 +19,7 @@
     "status",
     "pipeline"
   ],
-  "authors": [
-    {
+  "contributors": [{
       "name": "lykmapipo",
       "email": "lallyelias87@gmail.com",
       "url": "https://github.com/lykmapipo"
@@ -33,9 +32,13 @@
   ],
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/CodeTanzania/majifix-status/issues"
+    "url": "https://github.com/CodeTanzania/majifix-status/issues",
+    "email": "lallyelias87@gmail.com"
   },
   "homepage": "https://github.com/CodeTanzania/majifix-status",
+  "sandbox": {
+    "url": "https://majifix-status.herokuapp.com/v0.1.0/statuses"
+  },
   "devDependencies": {
     "body-parser": "^1.18.2",
     "chai": "^4.1.2",
