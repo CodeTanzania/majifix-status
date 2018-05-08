@@ -87,7 +87,7 @@ describe('Status', function () {
           const found = response.body;
           expect(found._id).to.exist;
           expect(found._id).to.be.equal(status._id.toString());
-          expect(found.name).to.be.equal(status.name);
+          expect(found.name.en).to.be.equal(status.name.en);
 
           done(error, response);
 
@@ -113,7 +113,7 @@ describe('Status', function () {
 
           expect(patched._id).to.exist;
           expect(patched._id).to.be.equal(status._id.toString());
-          expect(patched.name).to.be.equal(status.name);
+          expect(patched.name.en).to.be.equal(status.name.en);
 
           done(error, response);
 
@@ -139,7 +139,7 @@ describe('Status', function () {
 
           expect(puted._id).to.exist;
           expect(puted._id).to.be.equal(status._id.toString());
-          expect(puted.name).to.be.equal(status.name);
+          expect(puted.name.en).to.be.equal(status.name.en);
 
           done(error, response);
 
@@ -162,7 +162,7 @@ describe('Status', function () {
 
           expect(deleted._id).to.exist;
           expect(deleted._id).to.be.equal(status._id.toString());
-          expect(deleted.name).to.be.equal(status.name);
+          expect(deleted.name.en).to.be.equal(status.name.en);
 
           done(error, response);
 

@@ -32,20 +32,39 @@ describe('Status', function () {
 
     });
 
-    it('should have name field', function () {
+    describe('name', function () {
 
-      const name = Status.schema.tree.name;
-      const instance = Status.schema.paths.name.instance;
+      it('should be an embedded subdocument', function () {
 
-      expect(instance).to.be.equal('String');
-      expect(name).to.exist;
-      expect(name).to.be.an('object');
-      expect(name.type).to.be.a('function');
-      expect(name.type.name).to.be.equal('String');
-      expect(name.required).to.be.true;
-      expect(name.trim).to.be.true;
-      expect(name.index).to.be.true;
-      expect(name.searchable).to.be.true;
+        const name = Status.schema.tree.name;
+        const instance = Status.schema.paths.name.instance;
+        const tree = Status.schema.tree.name.tree;
+
+        expect(instance).to.be.equal('Embedded');
+        expect(name).to.exist;
+        expect(name).to.be.an('object');
+        expect(tree).to.exist;
+        expect(tree.en).to.exist;
+
+      });
+
+      it('should have name `en` locale field', function () {
+
+        const instance =
+          Status.schema.paths.name.schema.paths.en.instance;
+        const en = Status.schema.tree.name.tree.en;
+
+        expect(instance).to.be.equal('String');
+        expect(en).to.exist;
+        expect(en).to.be.an('object');
+        expect(en.type).to.be.a('function');
+        expect(en.type.name).to.be.equal('String');
+        expect(en.required).to.be.true;
+        expect(en.trim).to.be.true;
+        expect(en.index).to.be.true;
+        expect(en.searchable).to.be.true;
+
+      });
 
     });
 

@@ -6,7 +6,10 @@ const faker = require('faker');
 
 function sample(n = 3) {
   return {
-    name: (faker.hacker.ingverb() + ' ' + faker.hacker.noun()),
+    name: {
+      en: (faker.hacker.ingverb() + ' ' + faker.hacker.noun()),
+      sw: (faker.hacker.ingverb() + ' ' + faker.hacker.noun())
+    },
     weight: ((n % 5) * 5)
   };
 }

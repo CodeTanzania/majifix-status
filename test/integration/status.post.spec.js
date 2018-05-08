@@ -45,7 +45,7 @@ describe('Status', function () {
           expect(error).to.not.exist;
           expect(created).to.exist;
           expect(created._id).to.eql(status._id);
-          expect(created.name).to.eql(status.name);
+          expect(created.name.en).to.equal(status.name.en);
 
           //assert jurisdiction
           expect(created.jurisdiction).to.exist;
@@ -73,7 +73,7 @@ describe('Status', function () {
           expect(error).to.not.exist;
           expect(created).to.exist;
           expect(created._id).to.eql(status._id);
-          expect(created.name).to.eql(status.name);
+          expect(created.name.en).to.equal(status.name.en);
           done(error, created);
         });
     });

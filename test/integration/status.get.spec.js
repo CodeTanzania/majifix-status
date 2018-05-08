@@ -107,7 +107,7 @@ describe('Status', function () {
 
     it('should be able to search with options', function (done) {
 
-      const options = { filter: { q: statuses[0].name } };
+      const options = { filter: { q: statuses[0].name.en } };
       Status
         .get(options, function (error, results) {
           expect(error).to.not.exist;
@@ -134,7 +134,7 @@ describe('Status', function () {
 
 
     it('should parse filter options', function (done) {
-      const options = { filter: { name: statuses[0].name } };
+      const options = { filter: { 'name.en': statuses[0].name.en } };
       Status
         .get(options, function (error, results) {
           expect(error).to.not.exist;
