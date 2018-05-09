@@ -2,7 +2,6 @@
 
 /* dependencies */
 const path = require('path');
-const mongoose = require('mongoose');
 const { expect } = require('chai');
 const { Jurisdiction } = require('majifix-jurisdiction');
 const { Status } = require(path.join(__dirname, '..', '..'));
@@ -10,10 +9,6 @@ const { Status } = require(path.join(__dirname, '..', '..'));
 describe('Status', function () {
 
   let jurisdiction;
-
-  before(function (done) {
-    mongoose.connect('mongodb://localhost/majifix-status', done);
-  });
 
   before(function (done) {
     Jurisdiction.remove(done);
@@ -64,6 +59,7 @@ describe('Status', function () {
             .to.eql(status.jurisdiction.name);
           done(error, updated);
         });
+
     });
 
     it('should throw if not exists', function (done) {
@@ -78,6 +74,7 @@ describe('Status', function () {
           expect(updated).to.not.exist;
           done();
         });
+
     });
 
   });
@@ -106,9 +103,11 @@ describe('Status', function () {
           expect(updated.name.en).to.equal(status.name.en);
           done(error, updated);
         });
+
     });
 
     it('should throw if not exists', function (done) {
+
       status
         .put(function (error, updated) {
           expect(error).to.not.exist;
@@ -116,6 +115,7 @@ describe('Status', function () {
           expect(updated._id).to.eql(status._id);
           done();
         });
+
     });
 
   });

@@ -2,7 +2,6 @@
 
 /* dependencies */
 const path = require('path');
-const mongoose = require('mongoose');
 const { expect } = require('chai');
 const { Jurisdiction } = require('majifix-jurisdiction');
 const { Status } = require(path.join(__dirname, '..', '..'));
@@ -10,10 +9,6 @@ const { Status } = require(path.join(__dirname, '..', '..'));
 describe('Status', function () {
 
   let jurisdiction;
-
-  before(function (done) {
-    mongoose.connect('mongodb://localhost/majifix-status', done);
-  });
 
   before(function (done) {
     Jurisdiction.remove(done);
@@ -56,6 +51,7 @@ describe('Status', function () {
 
           done(error, created);
         });
+
     });
 
   });
@@ -76,6 +72,7 @@ describe('Status', function () {
           expect(created.name.en).to.equal(status.name.en);
           done(error, created);
         });
+
     });
 
   });

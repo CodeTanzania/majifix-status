@@ -4,7 +4,6 @@
 const path = require('path');
 const _ = require('lodash');
 const async = require('async');
-const mongoose = require('mongoose');
 const { expect } = require('chai');
 const { Jurisdiction } = require('majifix-jurisdiction');
 const { Status } = require(path.join(__dirname, '..', '..'));
@@ -12,10 +11,6 @@ const { Status } = require(path.join(__dirname, '..', '..'));
 describe('Status', function () {
 
   let jurisdiction;
-
-  before(function (done) {
-    mongoose.connect('mongodb://localhost/majifix-status', done);
-  });
 
   before(function (done) {
     Jurisdiction.remove(done);
@@ -38,12 +33,13 @@ describe('Status', function () {
     let statuses;
 
     before(function (done) {
-      const fakes = _.map(Status.fake(32), function (status) {
-        return function (next) {
-          status.jurisdiction = jurisdiction;
-          status.post(next);
-        };
-      });
+      const fakes =
+        _.map(Status.fake(32), function (status) {
+          return function (next) {
+            status.jurisdiction = jurisdiction;
+            status.post(next);
+          };
+        });
       async
       .parallel(fakes, function (error, created) {
         statuses = created;

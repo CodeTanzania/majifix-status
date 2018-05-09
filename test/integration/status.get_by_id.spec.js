@@ -3,7 +3,6 @@
 /* dependencies */
 const path = require('path');
 const _ = require('lodash');
-const mongoose = require('mongoose');
 const { expect } = require('chai');
 const { Jurisdiction } = require('majifix-jurisdiction');
 const { Status } = require(path.join(__dirname, '..', '..'));
@@ -11,10 +10,6 @@ const { Status } = require(path.join(__dirname, '..', '..'));
 describe('Status', function () {
 
   let jurisdiction;
-
-  before(function (done) {
-    mongoose.connect('mongodb://localhost/majifix-status', done);
-  });
 
   before(function (done) {
     Jurisdiction.remove(done);
@@ -47,6 +42,7 @@ describe('Status', function () {
     });
 
     it('should be able to get an instance', function (done) {
+
       Status
         .getById(status._id, function (error, found) {
           expect(error).to.not.exist;
@@ -61,6 +57,7 @@ describe('Status', function () {
             .to.eql(status.jurisdiction.name);
           done(error, found);
         });
+
     });
 
     it('should be able to get with options', function (done) {
@@ -95,6 +92,7 @@ describe('Status', function () {
     });
 
     it('should throw if not exists', function (done) {
+
       const status = Status.fake();
 
       Status
@@ -105,6 +103,7 @@ describe('Status', function () {
           expect(found).to.not.exist;
           done();
         });
+
     });
 
   });

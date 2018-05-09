@@ -3,7 +3,6 @@
 /* dependencies */
 const path = require('path');
 const request = require('supertest');
-const mongoose = require('mongoose');
 const { expect } = require('chai');
 const { Status, app, info } = require(path.join(__dirname, '..', '..'));
 
@@ -11,11 +10,6 @@ const { Status, app, info } = require(path.join(__dirname, '..', '..'));
 describe('Status', function () {
 
   describe('Rest API', function () {
-
-    before(function (done) {
-      mongoose.connect('mongodb://localhost/majifix-status',
-        done);
-    });
 
     before(function (done) {
       Status.remove(done);
@@ -147,8 +141,7 @@ describe('Status', function () {
 
     });
 
-    it('should handle HTTP DELETE on /statuses/:id', function (
-      done) {
+    it('should handle HTTP DELETE on /statuses/:id', function (done) {
 
       request(app)
         .delete(`/v${info.version}/statuses/${status._id}`)
@@ -169,7 +162,6 @@ describe('Status', function () {
         });
 
     });
-
 
     after(function (done) {
       Status.remove(done);
