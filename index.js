@@ -11,6 +11,7 @@
  * @author lally elias <lallyelias87@mail.com>
  * @since  0.1.0
  * @version 0.1.0
+ * @license MIT
  * @example
  *
  * const { app } = require('majifix-status');

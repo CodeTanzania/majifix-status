@@ -80,8 +80,8 @@ describe('Status', function () {
     let status;
 
     before(function (done) {
-      const fake = Status.fake();
-      fake
+      status = Status.fake();
+      status
         .post(function (error, created) {
           status = created;
           done(error, created);
