@@ -12,12 +12,10 @@ function wipe(done) {
       return mongoose.model(modelName);
     })
     .map(function (Model) {
-      return async.series.bind(null, [
-        //clean up all model data
-        Model.remove.bind(Model),
-        //drop all indexes
-        Model.collection.dropAllIndexes.bind(Model.collection)
-      ]);
+      //drop model collection
+      return function (next) {
+        Model.collection.drop(next);
+      };
     });
 
   //run all clean ups parallel
@@ -34,6 +32,11 @@ function wipe(done) {
 //setup database
 before(function (done) {
   mongoose.connect('mongodb://localhost/majifix-status', done);
+});
+
+// clear previous states
+before(function (done) {
+  wipe(done);
 });
 
 
