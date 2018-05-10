@@ -44,7 +44,6 @@ function boot() {
         }
         return sample;
       });
-      /* fake statuses */
       Status.create(samples, next);
     }
 
