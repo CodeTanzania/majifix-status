@@ -28,7 +28,10 @@ describe('Status', function () {
         });
     });
 
+    it('should expose default locale `en` when not set',function(){
+      expect(Status.DEFAULT_LOCALE).to.exist;
+      expect(Status.DEFAULT_LOCALE).to.equal('en');
+    });
+
   });
-
-
 });
