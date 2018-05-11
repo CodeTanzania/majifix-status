@@ -24,11 +24,12 @@ describe('Status', function () {
       expect(Status.OPTION_AUTOPOPULATE).to.exist;
       expect(Status.OPTION_AUTOPOPULATE)
         .to.be.eql({
-          select: { name: 1, color: 1 }
+          select: { name: 1, color: 1 },
+          maxDepth: 1
         });
     });
 
-    it('should expose default locale `en` when not set',function(){
+    it('should expose default locale `en` when not set', function () {
       expect(Status.DEFAULT_LOCALE).to.exist;
       expect(Status.DEFAULT_LOCALE).to.equal('en');
     });
