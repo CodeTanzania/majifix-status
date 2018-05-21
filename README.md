@@ -8,16 +8,19 @@ majifix-status
 A representation of an entity which provides a way to set flags on service requests(issues) in order to track their progress.
 
 ## Requirements
+
 - [NodeJS v9.9.0+](https://nodejs.org)
 - [MongoDB v3.4.10+](https://www.mongodb.com/)
 - [Mongoose v5.0.14+](https://github.com/Automattic/mongoose)
 
 ## Installation
+
 ```sh
 $ npm install majifix-status --save
 ```
 
 ## Usage
+
 ```js
 const mongoose = require('mongoose');
 const { app } = require('majifix-status');
@@ -32,27 +35,33 @@ app.start(function(error, env) {
 ```
 
 ## Testing
+
 * Clone this repository
 
 * Install all development dependencies
+
 ```sh
 $ npm install
 ```
 
 * Run example
+
 ```sh
 $ npm run dev
 ```
 
 * Then run test
+
 ```sh
 $ npm test
 ```
 
 ## Contribute
+
 It will be nice, if you open an issue first so that we can know what is going on, then, fork this repo and push in your ideas. Do not forget to add a bit of test(s) of what value you adding.
 
 ## References
+
 - [Open311 GeoReport v2](http://wiki.open311.org/GeoReport_v2/)
 - [popolo project](https://www.popoloproject.com/)
 - [http://geojson.org/](http://geojson.org/)
@@ -60,6 +69,7 @@ It will be nice, if you open an issue first so that we can know what is going on
 - [https://opengovdata.io/](https://opengovdata.io/)
 
 ## Licence
+
 The MIT License (MIT)
 
 Copyright (c) 2018 CodeTanzania & Contributors
