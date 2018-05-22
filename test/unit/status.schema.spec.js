@@ -34,7 +34,7 @@ describe('Status', function () {
 
     describe('name', function () {
 
-      it('should be an embedded subdocument', function () {
+      it('should be an embedded sub-document', function () {
 
         const name = Status.schema.tree.name;
         const instance = Status.schema.paths.name.instance;
