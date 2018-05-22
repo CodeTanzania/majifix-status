@@ -3,10 +3,10 @@
 
 /**
  * @name majifix-status
- * @description A representation of an entity which provides 
- * a way to set flags on service requests(issues) in order 
+ * @description A representation of an entity which provides
+ * a way to set flags on service requests(issues) in order
  * to track their progress.
- * 
+ *
  * @author Benson Maruchu <benmaruchu@gmail.com>
  * @author lally elias <lallyelias87@mail.com>
  * @since  0.1.0
@@ -42,12 +42,9 @@ const fields = [
   'sandbox',
   'contributors'
 ];
+
+/* extract information from package.json */
 const info = _.merge({}, _.pick(pkg, fields));
-
-
-/* ensure api version */
-process.env.API_VERSION = (process.env.API_VERSION || info.version);
-
 
 /* import models */
 const Status =
