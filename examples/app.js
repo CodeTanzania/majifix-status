@@ -25,13 +25,13 @@ function boot() {
   async.waterfall([
 
     function clear(next) {
-      Status.remove(function ( /*error, results*/ ) {
+      Status.remove(function ( /*error, results*/) {
         next();
       });
     },
 
     function clear(next) {
-      Jurisdiction.remove(function ( /*error, results*/ ) {
+      Jurisdiction.remove(function ( /*error, results*/) {
         next();
       });
     },
@@ -64,7 +64,7 @@ function boot() {
     /* fire the app */
     app.start(function (error, env) {
       console.log(
-        `visit http://0.0.0.0:${env.PORT}/v${info.version}/statuses`);
+        `visit http://0.0.0.0:${env.PORT}/v${env.API_VERSION}/statuses`);
     });
 
   });

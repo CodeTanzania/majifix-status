@@ -4,7 +4,8 @@
 const path = require('path');
 const request = require('supertest');
 const { expect } = require('chai');
-const { Status, app, info } = require(path.join(__dirname, '..', '..'));
+const { env } = require('majifix-common');
+const { Status, app } = require(path.join(__dirname, '..', '..'));
 
 
 describe('Status', function () {
@@ -22,7 +23,7 @@ describe('Status', function () {
       status = Status.fake();
 
       request(app)
-        .post(`/v${info.version}/statuses`)
+        .post(`/v${env.API_VERSION}/statuses`)
         .set('Accept', 'application/json')
         .set('Content-Type', 'application/json')
         .send(status)
@@ -45,7 +46,7 @@ describe('Status', function () {
     it('should handle HTTP GET on /statuses', function (done) {
 
       request(app)
-        .get(`/v${info.version}/statuses`)
+        .get(`/v${env.API_VERSION}/statuses`)
         .set('Accept', 'application/json')
         .expect(200)
         .expect('Content-Type', /json/)
@@ -71,7 +72,7 @@ describe('Status', function () {
     it('should handle HTTP GET on /statuses/id:', function (done) {
 
       request(app)
-        .get(`/v${info.version}/statuses/${status._id}`)
+        .get(`/v${env.API_VERSION}/statuses/${status._id}`)
         .set('Accept', 'application/json')
         .expect(200)
         .end(function (error, response) {
@@ -94,7 +95,7 @@ describe('Status', function () {
       const patch = status.fakeOnly('name');
 
       request(app)
-        .patch(`/v${info.version}/statuses/${status._id}`)
+        .patch(`/v${env.API_VERSION}/statuses/${status._id}`)
         .set('Accept', 'application/json')
         .set('Content-Type', 'application/json')
         .send(patch)
@@ -120,7 +121,7 @@ describe('Status', function () {
       const put = status.fakeOnly('name');
 
       request(app)
-        .put(`/v${info.version}/statuses/${status._id}`)
+        .put(`/v${env.API_VERSION}/statuses/${status._id}`)
         .set('Accept', 'application/json')
         .set('Content-Type', 'application/json')
         .send(put)
@@ -129,11 +130,11 @@ describe('Status', function () {
           expect(error).to.not.exist;
           expect(response).to.exist;
 
-          const puted = response.body;
+          const updated = response.body;
 
-          expect(puted._id).to.exist;
-          expect(puted._id).to.be.equal(status._id.toString());
-          expect(puted.name.en).to.be.equal(status.name.en);
+          expect(updated._id).to.exist;
+          expect(updated._id).to.be.equal(status._id.toString());
+          expect(updated.name.en).to.be.equal(status.name.en);
 
           done(error, response);
 
@@ -144,7 +145,7 @@ describe('Status', function () {
     it('should handle HTTP DELETE on /statuses/:id', function (done) {
 
       request(app)
-        .delete(`/v${info.version}/statuses/${status._id}`)
+        .delete(`/v${env.API_VERSION}/statuses/${status._id}`)
         .set('Accept', 'application/json')
         .expect(200)
         .end(function (error, response) {
