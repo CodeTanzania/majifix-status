@@ -5,7 +5,7 @@ const path = require('path');
 const _ = require('lodash');
 const async = require('async');
 const { expect } = require('chai');
-const { Jurisdiction } = require('majifix-jurisdiction');
+const { Jurisdiction } = require('@codetanzania/majifix-jurisdiction');
 const { Status } = require(path.join(__dirname, '..', '..'));
 
 describe('Status', function () {
