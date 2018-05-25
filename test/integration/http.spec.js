@@ -4,8 +4,7 @@
 const path = require('path');
 const request = require('supertest');
 const { expect } = require('chai');
-const { env } = require('@codetanzania/majifix-common');
-const { Status, app } = require(path.join(__dirname, '..', '..'));
+const { Status, router, app } = require(path.join(__dirname, '..', '..'));
 
 
 describe('Status', function () {
@@ -23,7 +22,7 @@ describe('Status', function () {
       status = Status.fake();
 
       request(app)
-        .post(`/v${env.API_VERSION}/statuses`)
+        .post(`/v${router.apiVersion}/statuses`)
         .set('Accept', 'application/json')
         .set('Content-Type', 'application/json')
         .send(status)
@@ -46,7 +45,7 @@ describe('Status', function () {
     it('should handle HTTP GET on /statuses', function (done) {
 
       request(app)
-        .get(`/v${env.API_VERSION}/statuses`)
+        .get(`/v${router.apiVersion}/statuses`)
         .set('Accept', 'application/json')
         .expect(200)
         .expect('Content-Type', /json/)
@@ -72,7 +71,7 @@ describe('Status', function () {
     it('should handle HTTP GET on /statuses/id:', function (done) {
 
       request(app)
-        .get(`/v${env.API_VERSION}/statuses/${status._id}`)
+        .get(`/v${router.apiVersion}/statuses/${status._id}`)
         .set('Accept', 'application/json')
         .expect(200)
         .end(function (error, response) {
@@ -95,7 +94,7 @@ describe('Status', function () {
       const patch = status.fakeOnly('name');
 
       request(app)
-        .patch(`/v${env.API_VERSION}/statuses/${status._id}`)
+        .patch(`/v${router.apiVersion}/statuses/${status._id}`)
         .set('Accept', 'application/json')
         .set('Content-Type', 'application/json')
         .send(patch)
@@ -121,7 +120,7 @@ describe('Status', function () {
       const put = status.fakeOnly('name');
 
       request(app)
-        .put(`/v${env.API_VERSION}/statuses/${status._id}`)
+        .put(`/v${router.apiVersion}/statuses/${status._id}`)
         .set('Accept', 'application/json')
         .set('Content-Type', 'application/json')
         .send(put)
@@ -145,7 +144,7 @@ describe('Status', function () {
     it('should handle HTTP DELETE on /statuses/:id', function (done) {
 
       request(app)
-        .delete(`/v${env.API_VERSION}/statuses/${status._id}`)
+        .delete(`/v${router.apiVersion}/statuses/${status._id}`)
         .set('Accept', 'application/json')
         .expect(200)
         .end(function (error, response) {
