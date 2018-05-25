@@ -1,6 +1,6 @@
 {
-  "name": "majifix-status",
-  "version": "0.1.0",
+  "name": "@codetanzania/majifix-status",
+  "version": "1.0.0",
   "description": "A representation of an entity which provides a way to set flags on service requests(issues) in order to track their progress.",
   "main": "index.js",
   "scripts": {
@@ -13,14 +13,13 @@
     "url": "https://github.com/CodeTanzania/majifix-status.git"
   },
   "keywords": [
-    "open311",
-    "311",
     "codetanzania",
+    "majifix",
+    "majifix-module",
     "status",
-    "pipeline"
+    "open311"
   ],
-  "contributors": [
-    {
+  "contributors": [{
       "name": "lykmapipo",
       "email": "lallyelias87@gmail.com",
       "url": "https://github.com/lykmapipo"
@@ -38,7 +37,7 @@
   },
   "homepage": "https://github.com/CodeTanzania/majifix-status",
   "sandbox": {
-    "url": "https://majifix-status.herokuapp.com/v0.1.0/statuses"
+    "url": "https://majifix-status.herokuapp.com/v1/statuses"
   },
   "devDependencies": {
     "@benmaruchu/faker": "^4.2.1",
@@ -69,5 +68,9 @@
     "mongoose-locale-schema": "^0.1.0",
     "mongoose-rest-actions": "^0.12.1",
     "randomcolor": "^0.5.3"
+  },
+  "engines": {
+    "node": ">=8.11.1",
+    "npm": ">=5.6.0"
   }
 }
