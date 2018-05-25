@@ -3,10 +3,11 @@
   "description": "A representation of an entity which provides a way to set flags on service requests(issues) in order to track their progress.",
   "repository": "https://github.com/CodeTanzania/majifix-status.git",
   "keywords": [
-    "open311",
-    "311",
+    "codetanzania",
     "majifix",
-    "status"
+    "majifix-module",
+    "status",
+    "open311"
   ],
   "addons": [
     "mongolab"
