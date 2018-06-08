@@ -8,13 +8,13 @@
  * to track their progress.
  *
  * @author Benson Maruchu <benmaruchu@gmail.com>
- * @author lally elias <lallyelias87@mail.com>
+ * @author lally elias <lallyelias87@gmail.com>
  * @since  0.1.0
  * @version 0.1.0
  * @license MIT
  * @example
  *
- * const { app } = require('majifix-status');
+ * const { app } = require('@codetanzania/majifix-status');
  *
  * ...
  *
@@ -43,8 +43,10 @@ const fields = [
   'contributors'
 ];
 
+
 /* extract information from package.json */
 const info = _.merge({}, _.pick(pkg, fields));
+
 
 /* import models */
 const Status =

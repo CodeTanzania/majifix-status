@@ -1,5 +1,4 @@
-majifix-status
-====================
+# majifix-status
 
 [![Build Status](https://travis-ci.org/CodeTanzania/majifix-status.svg?branch=develop)](https://travis-ci.org/CodeTanzania/majifix-status)
 [![Dependencies Status](https://david-dm.org/CodeTanzania/majifix-status/status.svg?style=flat-square)](https://david-dm.org/CodeTanzania/majifix-status)
@@ -9,51 +8,51 @@ A representation of an entity which provides a way to set flags on service reque
 
 ## Requirements
 
-- [NodeJS v9.9.0+](https://nodejs.org)
+- [NodeJS v8.11.1+](https://nodejs.org)
 - [MongoDB v3.4.10+](https://www.mongodb.com/)
-- [Mongoose v5.0.14+](https://github.com/Automattic/mongoose)
+- [Mongoose v5.1.2+](https://github.com/Automattic/mongoose)
 
 ## Installation
 
 ```sh
-$ npm install majifix-status --save
+npm install @codetanzania/majifix-status --save
 ```
 
 ## Usage
 
 ```js
 const mongoose = require('mongoose');
-const { app } = require('majifix-status');
+const { app } = require('@codetanzania/majifix-status');
 
 //connect to mongodb
 mongoose.connect(process.env.MONGODB_URI);
 
 //fire the app
-app.start(function(error, env) {
+app.start(function (error, env) {
   ...
 });
 ```
 
 ## Testing
 
-* Clone this repository
+- Clone this repository
 
-* Install all development dependencies
+- Install all development dependencies
 
 ```sh
-$ npm install
+npm install
 ```
 
-* Run example
+- Run example
 
 ```sh
-$ npm run dev
+npm run dev
 ```
 
-* Then run test
+- Then run test
 
 ```sh
-$ npm test
+npm test
 ```
 
 ## Contribute
