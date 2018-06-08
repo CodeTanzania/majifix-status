@@ -14,7 +14,7 @@
  * @license MIT
  * @example
  *
- * const { app } = require('majifix-status');
+ * const { app } = require('@codetanzania/majifix-status');
  *
  * ...
  *
@@ -43,8 +43,10 @@ const fields = [
   'contributors'
 ];
 
+
 /* extract information from package.json */
 const info = _.merge({}, _.pick(pkg, fields));
+
 
 /* import models */
 const Status =

@@ -116,7 +116,7 @@ define({ "api": [
       "examples": [
         {
           "title": "Success-Response:",
-          "content": "{\n  \"_id\": \"5aeed5f37e422f2743b97eb0\",\n  jurisdiction: {\n    _id: \"5af2fe3ea937a3238bd8e64b\",\n    code: \"66514685\",\n    name: \"Gana\"\n  },\n  \"name\": {\n    \"en\": \"overriding capacitor\"\n  },\n  \"weight\": 0,\n  \"color\": \"#45b726\",\n  \"createdAt\": \"2018-05-06T10:16:19.230Z\",\n  \"updatedAt\": \"2018-05-06T10:16:19.230Z\",\n}",
+          "content": "{\n  \"_id\": \"5aeed5f37e422f2743b97eb0\",\n  jurisdiction: {\n    _id: \"5af2fe3ea937a3238bd8e64b\",\n    code: \"66514685\",\n    name: \"Gana\"\n  },\n  \"name\": {\n    \"en\": \"Open\"\n  },\n  \"weight\": 0,\n  \"color\": \"#45b726\",\n  \"createdAt\": \"2018-05-06T10:16:19.230Z\",\n  \"updatedAt\": \"2018-05-06T10:16:19.230Z\",\n}",
           "type": "json"
         }
       ]
@@ -325,7 +325,7 @@ define({ "api": [
       "examples": [
         {
           "title": "Success-Response:",
-          "content": " {\n   \"data\": [\n   {\n     \"_id\": \"5aeed5f37e422f2743b97eb0\",\n     jurisdiction: {\n       _id: \"5af2fe3ea937a3238bd8e64b\",\n       code: \"66514685\",\n       name: \"Gana\"\n     },\n     \"name\": {\n       \"en\": \"overriding capacitor\"\n     },\n     \"weight\": 0,\n     \"color\": \"#45b726\",\n     \"createdAt\": \"2018-05-06T10:16:19.230Z\",\n     \"updatedAt\": \"2018-05-06T10:16:19.230Z\",\n    }\n   ],\n  \"total\": 10,\n  \"size\": 2,\n  \"limit\": 2,\n  \"skip\": 0,\n  \"page\": 1,\n  \"pages\": 5,\n  \"lastModified\": \"2018-05-06T10:19:04.910Z\"\n}",
+          "content": " {\n   \"data\": [\n   {\n     \"_id\": \"5aeed5f37e422f2743b97eb0\",\n     jurisdiction: {\n       _id: \"5af2fe3ea937a3238bd8e64b\",\n       code: \"66514685\",\n       name: \"Gana\"\n     },\n     \"name\": {\n       \"en\": \"Open\"\n     },\n     \"weight\": 0,\n     \"color\": \"#45b726\",\n     \"createdAt\": \"2018-05-06T10:16:19.230Z\",\n     \"updatedAt\": \"2018-05-06T10:16:19.230Z\",\n    }\n   ],\n  \"total\": 10,\n  \"size\": 2,\n  \"limit\": 2,\n  \"skip\": 0,\n  \"page\": 1,\n  \"pages\": 5,\n  \"lastModified\": \"2018-05-06T10:19:04.910Z\"\n}",
           "type": "json"
         }
       ]
@@ -478,7 +478,7 @@ define({ "api": [
       "examples": [
         {
           "title": "Success-Response:",
-          "content": "{\n  \"_id\": \"5aeed5f37e422f2743b97eb0\",\n  jurisdiction: {\n    _id: \"5af2fe3ea937a3238bd8e64b\",\n    code: \"66514685\",\n    name: \"Gana\"\n  },\n  \"name\": {\n    \"en\": \"overriding capacitor\"\n  },\n  \"weight\": 0,\n  \"color\": \"#45b726\",\n  \"createdAt\": \"2018-05-06T10:16:19.230Z\",\n  \"updatedAt\": \"2018-05-06T10:16:19.230Z\",\n}",
+          "content": "{\n  \"_id\": \"5aeed5f37e422f2743b97eb0\",\n  jurisdiction: {\n    _id: \"5af2fe3ea937a3238bd8e64b\",\n    code: \"66514685\",\n    name: \"Gana\"\n  },\n  \"name\": {\n    \"en\": \"Open\"\n  },\n  \"weight\": 0,\n  \"color\": \"#45b726\",\n  \"createdAt\": \"2018-05-06T10:16:19.230Z\",\n  \"updatedAt\": \"2018-05-06T10:16:19.230Z\",\n}",
           "type": "json"
         }
       ]
@@ -687,7 +687,7 @@ define({ "api": [
       "examples": [
         {
           "title": "Success-Response:",
-          "content": " {\n   \"data\": [\n   {\n     \"_id\": \"5aeed5f37e422f2743b97eb0\",\n     jurisdiction: {\n       _id: \"5af2fe3ea937a3238bd8e64b\",\n       code: \"66514685\",\n       name: \"Gana\"\n     },\n     \"name\": {\n       \"en\": \"overriding capacitor\"\n     },\n     \"weight\": 0,\n     \"color\": \"#45b726\",\n     \"createdAt\": \"2018-05-06T10:16:19.230Z\",\n     \"updatedAt\": \"2018-05-06T10:16:19.230Z\",\n    }\n   ],\n  \"total\": 10,\n  \"size\": 2,\n  \"limit\": 2,\n  \"skip\": 0,\n  \"page\": 1,\n  \"pages\": 5,\n  \"lastModified\": \"2018-05-06T10:19:04.910Z\"\n}",
+          "content": " {\n   \"data\": [\n   {\n     \"_id\": \"5aeed5f37e422f2743b97eb0\",\n     jurisdiction: {\n       _id: \"5af2fe3ea937a3238bd8e64b\",\n       code: \"66514685\",\n       name: \"Gana\"\n     },\n     \"name\": {\n       \"en\": \"Open\"\n     },\n     \"weight\": 0,\n     \"color\": \"#45b726\",\n     \"createdAt\": \"2018-05-06T10:16:19.230Z\",\n     \"updatedAt\": \"2018-05-06T10:16:19.230Z\",\n    }\n   ],\n  \"total\": 10,\n  \"size\": 2,\n  \"limit\": 2,\n  \"skip\": 0,\n  \"page\": 1,\n  \"pages\": 5,\n  \"lastModified\": \"2018-05-06T10:19:04.910Z\"\n}",
           "type": "json"
         }
       ]
@@ -840,7 +840,7 @@ define({ "api": [
       "examples": [
         {
           "title": "Success-Response:",
-          "content": "{\n  \"_id\": \"5aeed5f37e422f2743b97eb0\",\n  jurisdiction: {\n    _id: \"5af2fe3ea937a3238bd8e64b\",\n    code: \"66514685\",\n    name: \"Gana\"\n  },\n  \"name\": {\n    \"en\": \"overriding capacitor\"\n  },\n  \"weight\": 0,\n  \"color\": \"#45b726\",\n  \"createdAt\": \"2018-05-06T10:16:19.230Z\",\n  \"updatedAt\": \"2018-05-06T10:16:19.230Z\",\n}",
+          "content": "{\n  \"_id\": \"5aeed5f37e422f2743b97eb0\",\n  jurisdiction: {\n    _id: \"5af2fe3ea937a3238bd8e64b\",\n    code: \"66514685\",\n    name: \"Gana\"\n  },\n  \"name\": {\n    \"en\": \"Open\"\n  },\n  \"weight\": 0,\n  \"color\": \"#45b726\",\n  \"createdAt\": \"2018-05-06T10:16:19.230Z\",\n  \"updatedAt\": \"2018-05-06T10:16:19.230Z\",\n}",
           "type": "json"
         }
       ]
@@ -993,7 +993,7 @@ define({ "api": [
       "examples": [
         {
           "title": "Success-Response:",
-          "content": "{\n  \"_id\": \"5aeed5f37e422f2743b97eb0\",\n  jurisdiction: {\n    _id: \"5af2fe3ea937a3238bd8e64b\",\n    code: \"66514685\",\n    name: \"Gana\"\n  },\n  \"name\": {\n    \"en\": \"overriding capacitor\"\n  },\n  \"weight\": 0,\n  \"color\": \"#45b726\",\n  \"createdAt\": \"2018-05-06T10:16:19.230Z\",\n  \"updatedAt\": \"2018-05-06T10:16:19.230Z\",\n}",
+          "content": "{\n  \"_id\": \"5aeed5f37e422f2743b97eb0\",\n  jurisdiction: {\n    _id: \"5af2fe3ea937a3238bd8e64b\",\n    code: \"66514685\",\n    name: \"Gana\"\n  },\n  \"name\": {\n    \"en\": \"Open\"\n  },\n  \"weight\": 0,\n  \"color\": \"#45b726\",\n  \"createdAt\": \"2018-05-06T10:16:19.230Z\",\n  \"updatedAt\": \"2018-05-06T10:16:19.230Z\",\n}",
           "type": "json"
         }
       ]
@@ -1146,7 +1146,7 @@ define({ "api": [
       "examples": [
         {
           "title": "Success-Response:",
-          "content": "{\n  \"_id\": \"5aeed5f37e422f2743b97eb0\",\n  jurisdiction: {\n    _id: \"5af2fe3ea937a3238bd8e64b\",\n    code: \"66514685\",\n    name: \"Gana\"\n  },\n  \"name\": {\n    \"en\": \"overriding capacitor\"\n  },\n  \"weight\": 0,\n  \"color\": \"#45b726\",\n  \"createdAt\": \"2018-05-06T10:16:19.230Z\",\n  \"updatedAt\": \"2018-05-06T10:16:19.230Z\",\n}",
+          "content": "{\n  \"_id\": \"5aeed5f37e422f2743b97eb0\",\n  jurisdiction: {\n    _id: \"5af2fe3ea937a3238bd8e64b\",\n    code: \"66514685\",\n    name: \"Gana\"\n  },\n  \"name\": {\n    \"en\": \"Open\"\n  },\n  \"weight\": 0,\n  \"color\": \"#45b726\",\n  \"createdAt\": \"2018-05-06T10:16:19.230Z\",\n  \"updatedAt\": \"2018-05-06T10:16:19.230Z\",\n}",
           "type": "json"
         }
       ]
