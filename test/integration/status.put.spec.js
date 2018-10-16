@@ -11,7 +11,7 @@ describe('Status', function () {
   let jurisdiction;
 
   before(function (done) {
-    Jurisdiction.remove(done);
+    Jurisdiction.deleteMany(done);
   });
 
   before(function (done) {
@@ -23,7 +23,7 @@ describe('Status', function () {
   });
 
   before(function (done) {
-    Status.remove(done);
+    Status.deleteMany(done);
   });
 
   describe('static put', function () {
@@ -121,11 +121,11 @@ describe('Status', function () {
   });
 
   after(function (done) {
-    Status.remove(done);
+    Status.deleteMany(done);
   });
 
   after(function (done) {
-    Jurisdiction.remove(done);
+    Jurisdiction.deleteMany(done);
   });
 
 });

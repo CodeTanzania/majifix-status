@@ -16,7 +16,7 @@ describe('Status', function () {
   describe('Rest API', function () {
 
     before(function (done) {
-      Status.remove(done);
+      Status.deleteMany(done);
     });
 
     let status;
@@ -168,7 +168,7 @@ describe('Status', function () {
     });
 
     after(function (done) {
-      Status.remove(done);
+      Status.deleteMany(done);
     });
 
   });
