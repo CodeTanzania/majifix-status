@@ -26,7 +26,7 @@ describe('Status', function () {
       status = Status.fake();
 
       request(app)
-        .post(`/v${apiVersion}/statuses`)
+        .post(`/${apiVersion}/statuses`)
         .set('Accept', 'application/json')
         .set('Content-Type', 'application/json')
         .send(status)
@@ -49,7 +49,7 @@ describe('Status', function () {
     it('should handle HTTP GET on /statuses', function (done) {
 
       request(app)
-        .get(`/v${apiVersion}/statuses`)
+        .get(`/${apiVersion}/statuses`)
         .set('Accept', 'application/json')
         .expect(200)
         .expect('Content-Type', /json/)
@@ -75,7 +75,7 @@ describe('Status', function () {
     it('should handle HTTP GET on /statuses/id:', function (done) {
 
       request(app)
-        .get(`/v${apiVersion}/statuses/${status._id}`)
+        .get(`/${apiVersion}/statuses/${status._id}`)
         .set('Accept', 'application/json')
         .expect(200)
         .end(function (error, response) {
@@ -98,7 +98,7 @@ describe('Status', function () {
       const patch = status.fakeOnly('name');
 
       request(app)
-        .patch(`/v${apiVersion}/statuses/${status._id}`)
+        .patch(`/${apiVersion}/statuses/${status._id}`)
         .set('Accept', 'application/json')
         .set('Content-Type', 'application/json')
         .send(patch)
@@ -124,7 +124,7 @@ describe('Status', function () {
       const put = status.fakeOnly('name');
 
       request(app)
-        .put(`/v${apiVersion}/statuses/${status._id}`)
+        .put(`/${apiVersion}/statuses/${status._id}`)
         .set('Accept', 'application/json')
         .set('Content-Type', 'application/json')
         .send(put)
@@ -148,7 +148,7 @@ describe('Status', function () {
     it('should handle HTTP DELETE on /statuses/:id', function (done) {
 
       request(app)
-        .delete(`/v${apiVersion}/statuses/${status._id}`)
+        .delete(`/${apiVersion}/statuses/${status._id}`)
         .set('Accept', 'application/json')
         .expect(200)
         .end(function (error, response) {
