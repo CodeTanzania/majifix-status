@@ -88,11 +88,19 @@
     }
   },
   "commitlint": {
-    "extends": ["@commitlint/config-conventional"]
+    "extends": [
+      "@commitlint/config-conventional"
+    ]
   },
   "lint-staged": {
-    "*.{js}": ["prettier --write", "git add"],
-    "*.{md,html}": ["prettier --write", "git add"]
+    "*.{js}": [
+      "prettier --write",
+      "git add"
+    ],
+    "*.{md,html}": [
+      "prettier --write",
+      "git add"
+    ]
   },
   "husky": {
     "hooks": {
