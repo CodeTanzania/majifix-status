@@ -6,46 +6,46 @@ const { expect } = require('chai');
 const { Jurisdiction } = require('@codetanzania/majifix-jurisdiction');
 const { Status } = require(path.join(__dirname, '..', '..'));
 
-describe('Status', function () {
+describe('Status', () => {
 
   let jurisdiction;
 
-  before(function (done) {
+  before(done => {
     Jurisdiction.deleteMany(done);
   });
 
-  before(function (done) {
+  before(done => {
     jurisdiction = Jurisdiction.fake();
-    jurisdiction.post(function (error, created) {
+    jurisdiction.post((error, created) => {
       jurisdiction = created;
       done(error, created);
     });
   });
 
-  before(function (done) {
+  before(done => {
     Status.deleteMany(done);
   });
 
-  describe('static patch', function () {
+  describe('static patch', () => {
 
     let status;
 
-    before(function (done) {
+    before(done => {
       status = Status.fake();
       status.jurisdiction = jurisdiction;
       status
-        .post(function (error, created) {
+        .post((error, created) => {
           status = created;
           done(error, created);
         });
     });
 
-    it('should be able to patch', function (done) {
+    it('should be able to patch', done => {
 
       status = status.fakeOnly('name');
 
       Status
-        .patch(status._id, status, function (error, updated) {
+        .patch(status._id, status, (error, updated) => {
           expect(error).to.not.exist;
           expect(updated).to.exist;
           expect(updated._id).to.eql(status._id);
@@ -62,12 +62,12 @@ describe('Status', function () {
 
     });
 
-    it('should throw if not exists', function (done) {
+    it('should throw if not exists', done => {
 
       const fake = Status.fake();
 
       Status
-        .patch(fake._id, fake, function (error, updated) {
+        .patch(fake._id, fake, (error, updated) => {
           expect(error).to.exist;
           expect(error.status).to.exist;
           expect(error.message).to.be.equal('Not Found');
@@ -79,25 +79,25 @@ describe('Status', function () {
 
   });
 
-  describe('instance patch', function () {
+  describe('instance patch', () => {
 
     let status;
 
-    before(function (done) {
+    before(done => {
       status = Status.fake();
       status
-        .post(function (error, created) {
+        .post((error, created) => {
           status = created;
           done(error, created);
         });
     });
 
-    it('should be able to patch', function (done) {
+    it('should be able to patch', done => {
 
       status = status.fakeOnly('name');
 
       status
-        .patch(function (error, updated) {
+        .patch((error, updated) => {
           expect(error).to.not.exist;
           expect(updated).to.exist;
           expect(updated._id).to.eql(status._id);
@@ -107,10 +107,10 @@ describe('Status', function () {
 
     });
 
-    it('should throw if not exists', function (done) {
+    it('should throw if not exists', done => {
 
       status
-        .patch(function (error, updated) {
+        .patch((error, updated) => {
           expect(error).to.not.exist;
           expect(updated).to.exist;
           expect(updated._id).to.eql(status._id);
@@ -121,11 +121,11 @@ describe('Status', function () {
 
   });
 
-  after(function (done) {
+  after(done => {
     Status.deleteMany(done);
   });
 
-  after(function (done) {
+  after(done => {
     Jurisdiction.deleteMany(done);
   });
 
