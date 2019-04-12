@@ -1,3 +1,11 @@
+#### 1.4.5 (2019-04-12)
+
+##### Chores
+
+- update package version to 1.4.5 ([10e2b5d2](https://github.com/CodeTanzania/majifix-status/commit/10e2b5d283121738c19d2fc71b7d236f95db1415))
+- update dependencies and format file ([ffee0240](https://github.com/CodeTanzania/majifix-status/commit/ffee02400f26b6b326f3b7a04f39f095222e26e0))
+- update dependencies ([517446c4](https://github.com/CodeTanzania/majifix-status/commit/517446c4f97d2dbaaf2faabf6ea2721284cb2d02))
+
 #### 1.4.4 (2019-04-11)
 
 ##### Chores
