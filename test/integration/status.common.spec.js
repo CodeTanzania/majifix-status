@@ -6,41 +6,41 @@ const { expect } = require('chai');
 const { Jurisdiction } = require('@codetanzania/majifix-jurisdiction');
 const { Status } = require(path.join(__dirname, '..', '..'));
 
-describe('Status', function () {
+describe('Status', () => {
 
   let jurisdiction;
 
-  before(function (done) {
+  before(done => {
     Jurisdiction.deleteMany(done);
   });
 
-  before(function (done) {
+  before(done => {
     jurisdiction = Jurisdiction.fake();
-    jurisdiction.post(function (error, created) {
+    jurisdiction.post((error, created) => {
       jurisdiction = created;
       done(error, created);
     });
   });
 
-  before(function (done) {
+  before(done => {
     Status.deleteMany(done);
   });
 
-  describe('static', function () {
+  describe('static', () => {
 
     let status;
 
-    before(function (done) {
+    before(done => {
       status = Status.fake();
       status.jurisdiction = jurisdiction;
       status
-        .post(function (error, created) {
+        .post((error, created) => {
           status = created;
           done(error, created);
         });
     });
 
-    it('should be able to get default', function (done) {
+    it('should be able to get default', done => {
 
       Status
         .findDefault(function (error, status) {
@@ -62,11 +62,11 @@ describe('Status', function () {
 
   });
 
-  after(function (done) {
+  after(done => {
     Status.deleteMany(done);
   });
 
-  after(function (done) {
+  after(done => {
     Jurisdiction.deleteMany(done);
   });
 

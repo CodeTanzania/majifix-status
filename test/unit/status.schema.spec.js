@@ -11,11 +11,11 @@ const Status =
   require(path.join(__dirname, '..', '..', 'lib', 'status.model'));
 
 
-describe('Status', function () {
+describe('Status', () => {
 
-  describe('Schema', function () {
+  describe('Schema', () => {
 
-    it('should have jurisdiction field', function () {
+    it('should have jurisdiction field', () => {
 
       const jurisdiction = Status.schema.tree.jurisdiction;
       const instance = Status.schema.paths.jurisdiction.instance;
@@ -31,9 +31,9 @@ describe('Status', function () {
 
     });
 
-    describe('name', function () {
+    describe('name', () => {
 
-      it('should be an embedded sub-document', function () {
+      it('should be an embedded sub-document', () => {
 
         const name = Status.schema.tree.name;
         const instance = Status.schema.paths.name.instance;
@@ -47,7 +47,7 @@ describe('Status', function () {
 
       });
 
-      it('should have name `en` locale field', function () {
+      it('should have name `en` locale field', () => {
 
         const instance =
           Status.schema.paths.name.schema.paths.en.instance;
@@ -67,7 +67,7 @@ describe('Status', function () {
 
     });
 
-    it('should have weight field', function () {
+    it('should have weight field', () => {
 
       const weight = Status.schema.tree.weight;
       const instance = Status.schema.paths.weight.instance;
@@ -82,7 +82,7 @@ describe('Status', function () {
 
     });
 
-    it('should have color field', function () {
+    it('should have color field', () => {
 
       const color = Status.schema.tree.color;
       const instance = Status.schema.paths.color.instance;

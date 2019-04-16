@@ -7,44 +7,44 @@ const { expect } = require('chai');
 const { Jurisdiction } = require('@codetanzania/majifix-jurisdiction');
 const { Status } = require(path.join(__dirname, '..', '..'));
 
-describe('Status', function () {
+describe('Status', () => {
 
   let jurisdiction;
 
-  before(function (done) {
+  before(done => {
     Jurisdiction.deleteMany(done);
   });
 
-  before(function (done) {
+  before(done => {
     jurisdiction = Jurisdiction.fake();
-    jurisdiction.post(function (error, created) {
+    jurisdiction.post((error, created) => {
       jurisdiction = created;
       done(error, created);
     });
   });
 
-  before(function (done) {
+  before(done => {
     Status.deleteMany(done);
   });
 
-  describe('get by id', function () {
+  describe('get by id', () => {
 
     let status;
 
-    before(function (done) {
+    before(done => {
       status = Status.fake();
       status.jurisdiction = jurisdiction;
       status
-        .post(function (error, created) {
+        .post((error, created) => {
           status = created;
           done(error, created);
         });
     });
 
-    it('should be able to get an instance', function (done) {
+    it('should be able to get an instance', done => {
 
       Status
-        .getById(status._id, function (error, found) {
+        .getById(status._id, (error, found) => {
           expect(error).to.not.exist;
           expect(found).to.exist;
           expect(found._id).to.eql(status._id);
@@ -60,7 +60,7 @@ describe('Status', function () {
 
     });
 
-    it('should be able to get with options', function (done) {
+    it('should be able to get with options', done => {
 
       const options = {
         _id: status._id,
@@ -68,7 +68,7 @@ describe('Status', function () {
       };
 
       Status
-        .getById(options, function (error, found) {
+        .getById(options, (error, found) => {
           expect(error).to.not.exist;
           expect(found).to.exist;
           expect(found._id).to.eql(status._id);
@@ -81,7 +81,7 @@ describe('Status', function () {
             'color',
             'createdAt',
             'updatedAt'
-          ], function (field) {
+          ], (field) => {
             expect(fields).to.not.include(field);
           });
 
@@ -91,12 +91,12 @@ describe('Status', function () {
 
     });
 
-    it('should throw if not exists', function (done) {
+    it('should throw if not exists', done => {
 
       const status = Status.fake();
 
       Status
-        .getById(status._id, function (error, found) {
+        .getById(status._id, (error, found) => {
           expect(error).to.exist;
           expect(error.status).to.exist;
           expect(error.message).to.be.equal('Not Found');
@@ -108,11 +108,11 @@ describe('Status', function () {
 
   });
 
-  after(function (done) {
+  after(done => {
     Status.deleteMany(done);
   });
 
-  after(function (done) {
+  after(done => {
     Jurisdiction.deleteMany(done);
   });
 
