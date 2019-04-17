@@ -43,7 +43,7 @@ describe('Status', () => {
     it('should be able to get default', done => {
 
       Status
-        .findDefault(function (error, status) {
+        .findDefault((error, status) => {
           expect(error).to.not.exist;
           expect(status).to.exist;
           expect(status._id).to.eql(status._id);

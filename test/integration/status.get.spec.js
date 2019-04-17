@@ -34,7 +34,7 @@ describe('Status', () => {
 
     before(done => {
       const fakes =
-        _.map(Status.fake(32), (status) => {
+        _.map(Status.fake(32), status => {
           return  next => {
             status.jurisdiction = jurisdiction;
             status.post(next);
