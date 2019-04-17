@@ -1,6 +1,6 @@
 {
   "name": "@codetanzania/majifix-status",
-  "version": "1.4.3",
+  "version": "1.4.5",
   "description": "A representation of an entity which provides a way to set flags on service requests(issues) in order to track their progress.",
   "main": "index.js",
   "scripts": {
@@ -88,19 +88,11 @@
     }
   },
   "commitlint": {
-    "extends": [
-      "@commitlint/config-conventional"
-    ]
+    "extends": ["@commitlint/config-conventional"]
   },
   "lint-staged": {
-    "*.{js}": [
-      "prettier --write",
-      "git add"
-    ],
-    "*.{md,html}": [
-      "prettier --write",
-      "git add"
-    ]
+    "*.{js}": ["prettier --write", "git add"],
+    "*.{md,html}": ["prettier --write", "git add"]
   },
   "husky": {
     "hooks": {
