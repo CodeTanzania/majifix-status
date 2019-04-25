@@ -12,7 +12,7 @@
     "pretest": "npm run lint",
     "test": "NODE_ENV=test mocha --require @babel/register test/**/*.spec.js",
     "integration": "grunt integration",
-    "dev": "npm run seed && npm run start",
+    "dev": "npm run start",
     "start": "BASE_PATH=./examples node ./examples/app.js",
     "seed": "BASE_PATH=./examples node ./examples/seed.js",
     "commit": "git-cz",
