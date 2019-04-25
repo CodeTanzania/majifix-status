@@ -1,119 +1,85 @@
-'use strict';
-
 /* dependencies */
-const path = require('path');
-const _ = require('lodash');
-const { expect } = require('chai');
-const { Jurisdiction } = require('@codetanzania/majifix-jurisdiction');
-const { Status } = require(path.join(__dirname, '..', '..'));
+import _ from 'lodash';
+import { expect } from 'chai';
+import { clear, create } from '@lykmapipo/mongoose-test-helpers';
+import { Jurisdiction } from '@codetanzania/majifix-jurisdiction';
+import { Status } from '../../src';
 
 describe('Status', () => {
-
   let jurisdiction;
 
   before(done => {
-    Jurisdiction.deleteMany(done);
+    clear(Status, Jurisdiction, done);
   });
 
   before(done => {
     jurisdiction = Jurisdiction.fake();
-    jurisdiction.post((error, created) => {
-      jurisdiction = created;
-      done(error, created);
-    });
-  });
-
-  before(done => {
-    Status.deleteMany(done);
+    create(jurisdiction, done);
   });
 
   describe('get by id', () => {
-
     let status;
 
     before(done => {
       status = Status.fake();
       status.jurisdiction = jurisdiction;
-      status
-        .post((error, created) => {
-          status = created;
-          done(error, created);
-        });
+      status.post((error, created) => {
+        status = created;
+        done(error, created);
+      });
     });
 
     it('should be able to get an instance', done => {
+      Status.getById(status._id, (error, found) => {
+        expect(error).to.not.exist;
+        expect(found).to.exist;
+        expect(found._id).to.eql(status._id);
 
-      Status
-        .getById(status._id, (error, found) => {
-          expect(error).to.not.exist;
-          expect(found).to.exist;
-          expect(found._id).to.eql(status._id);
-
-          //assert jurisdiction
-          expect(found.jurisdiction).to.exist;
-          expect(found.jurisdiction.code)
-            .to.eql(status.jurisdiction.code);
-          expect(found.jurisdiction.name)
-            .to.eql(status.jurisdiction.name);
-          done(error, found);
-        });
-
+        // assert jurisdiction
+        expect(found.jurisdiction).to.exist;
+        expect(found.jurisdiction.code).to.eql(status.jurisdiction.code);
+        expect(found.jurisdiction.name).to.eql(status.jurisdiction.name);
+        done(error, found);
+      });
     });
 
     it('should be able to get with options', done => {
-
       const options = {
         _id: status._id,
-        select: 'name'
+        select: 'name',
       };
 
-      Status
-        .getById(options, (error, found) => {
-          expect(error).to.not.exist;
-          expect(found).to.exist;
-          expect(found._id).to.eql(status._id);
-          expect(found.name).to.exist;
+      Status.getById(options, (error, found) => {
+        expect(error).to.not.exist;
+        expect(found).to.exist;
+        expect(found._id).to.eql(status._id);
+        expect(found.name).to.exist;
 
-          //...assert selection
-          const fields = _.keys(found.toObject());
-          expect(fields).to.have.length(3);
-          _.map([
-            'color',
-            'createdAt',
-            'updatedAt'
-          ], (field) => {
-            expect(fields).to.not.include(field);
-          });
-
-
-          done(error, found);
+        // ...assert selection
+        const fields = _.keys(found.toObject());
+        expect(fields).to.have.length(3);
+        _.map(['color', 'createdAt', 'updatedAt'], field => {
+          expect(fields).to.not.include(field);
         });
 
+        done(error, found);
+      });
     });
 
     it('should throw if not exists', done => {
+      const fake = Status.fake();
 
-      const status = Status.fake();
-
-      Status
-        .getById(status._id, (error, found) => {
-          expect(error).to.exist;
-          expect(error.status).to.exist;
-          expect(error.message).to.be.equal('Not Found');
-          expect(found).to.not.exist;
-          done();
-        });
-
+      Status.getById(fake._id, (error, found) => {
+        expect(error).to.exist;
+        expect(error.status).to.exist;
+        expect(error.message).to.be.equal('Not Found');
+        expect(found).to.not.exist;
+        done();
+      });
     });
-
   });
 
   after(done => {
-    Status.deleteMany(done);
+    clear(Status, Jurisdiction, done);
   });
-
-  after(done => {
-    Jurisdiction.deleteMany(done);
-  });
-
 });
