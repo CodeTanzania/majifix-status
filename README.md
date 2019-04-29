@@ -2,8 +2,8 @@
 
 [![Build Status](https://travis-ci.org/CodeTanzania/majifix-status.svg?branch=develop)](https://travis-ci.org/CodeTanzania/majifix-status)
 [![Dependencies Status](https://david-dm.org/CodeTanzania/majifix-status/status.svg?style=flat-square)](https://david-dm.org/CodeTanzania/majifix-status)
-[![Deploy to Heroku](https://www.herokucdn.com/deploy/button.png)](https://heroku.com/deploy?template=https://github.com/CodeTanzania/majifix-status/tree/develop)
 [![Renovate enabled](https://img.shields.io/badge/renovate-enabled-brightgreen.svg)](https://renovatebot.com/)
+[![Deploy to Heroku](https://www.herokucdn.com/deploy/button.png)](https://heroku.com/deploy?template=https://github.com/CodeTanzania/majifix-status/tree/develop)
 
 A representation of an entity which provides a way to set flags on service requests(issues) in order to track their progress.
 
