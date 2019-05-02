@@ -1,8 +1,13 @@
-/* dependencies */
 import request from 'supertest';
+import app from '@lykmapipo/express-common';
 import { expect } from 'chai';
 import { clear } from '@lykmapipo/mongoose-test-helpers';
-import { Status, apiVersion, app } from '../../src';
+import { Status, apiVersion, router } from '../../src';
+
+/* declarations */
+app.mount(router);
+
+const { testApp } = app;
 
 describe('Status', () => {
   describe('Rest API', () => {
@@ -15,7 +20,7 @@ describe('Status', () => {
     it('should handle HTTP POST on /statuses', done => {
       status = Status.fake();
 
-      request(app)
+      request(testApp)
         .post(`/${apiVersion}/statuses`)
         .set('Accept', 'application/json')
         .set('Content-Type', 'application/json')
@@ -35,7 +40,7 @@ describe('Status', () => {
     });
 
     it('should handle HTTP GET on /statuses', done => {
-      request(app)
+      request(testApp)
         .get(`/${apiVersion}/statuses`)
         .set('Accept', 'application/json')
         .expect(200)
@@ -58,7 +63,7 @@ describe('Status', () => {
     });
 
     it('should handle HTTP GET on /statuses/id:', done => {
-      request(app)
+      request(testApp)
         .get(`/${apiVersion}/statuses/${status._id}`)
         .set('Accept', 'application/json')
         .expect(200)
@@ -78,7 +83,7 @@ describe('Status', () => {
     it('should handle HTTP PATCH on /statuses/id:', done => {
       const patch = status.fakeOnly('name');
 
-      request(app)
+      request(testApp)
         .patch(`/${apiVersion}/statuses/${status._id}`)
         .set('Accept', 'application/json')
         .set('Content-Type', 'application/json')
@@ -101,7 +106,7 @@ describe('Status', () => {
     it('should handle HTTP PUT on /statuses/id:', done => {
       const put = status.fakeOnly('name');
 
-      request(app)
+      request(testApp)
         .put(`/${apiVersion}/statuses/${status._id}`)
         .set('Accept', 'application/json')
         .set('Content-Type', 'application/json')
@@ -122,7 +127,7 @@ describe('Status', () => {
     });
 
     it('should handle HTTP DELETE on /statuses/:id', done => {
-      request(app)
+      request(testApp)
         .delete(`/${apiVersion}/statuses/${status._id}`)
         .set('Accept', 'application/json')
         .expect(200)
