@@ -80,7 +80,7 @@
     "jshint-stylish": "2.2.1",
     "lint-staged": "8.1.7",
     "mocha": "6.1.4",
-    "mongoose": "5.5.8",
+    "mongoose": "5.5.9",
     "nodemon": "1.19.0",
     "prettier": "1.17.1",
     "rimraf": "2.6.3",
