@@ -1,123 +1,93 @@
-'use strict';
-
 /* dependencies */
-const path = require('path');
-const { expect } = require('chai');
-const { Jurisdiction } = require('@codetanzania/majifix-jurisdiction');
-const { Status } = require(path.join(__dirname, '..', '..'));
+import { expect } from 'chai';
+import { clear, create } from '@lykmapipo/mongoose-test-helpers';
+import { Jurisdiction } from '@codetanzania/majifix-jurisdiction';
+import { Status } from '../../src';
 
-describe('Status', function () {
-
+describe('Status', () => {
   let jurisdiction;
 
-  before(function (done) {
-    Jurisdiction.deleteMany(done);
+  before(done => {
+    clear(Jurisdiction, done);
   });
 
-  before(function (done) {
+  before(done => {
     jurisdiction = Jurisdiction.fake();
-    jurisdiction.post(function (error, created) {
-      jurisdiction = created;
-      done(error, created);
-    });
+    create(jurisdiction, done);
   });
 
-  before(function (done) {
-    Status.deleteMany(done);
+  before(done => {
+    clear(Status, done);
   });
 
-  describe('static delete', function () {
-
+  describe('static delete', () => {
     let status;
 
-    before(function (done) {
+    before(done => {
       status = Status.fake();
       status.jurisdiction = jurisdiction;
-      status
-        .post(function (error, created) {
-          status = created;
-          done(error, created);
-        });
+      status.post((error, created) => {
+        status = created;
+        done(error, created);
+      });
     });
 
-    it('should be able to delete', function (done) {
+    it('should be able to delete', done => {
+      Status.del(status._id, (error, deleted) => {
+        expect(error).to.not.exist;
+        expect(deleted).to.exist;
+        expect(deleted._id).to.eql(status._id);
 
-      Status
-        .del(status._id, function (error, deleted) {
-          expect(error).to.not.exist;
-          expect(deleted).to.exist;
-          expect(deleted._id).to.eql(status._id);
-
-          //assert jurisdiction
-          expect(deleted.jurisdiction).to.exist;
-          expect(deleted.jurisdiction.code)
-            .to.eql(status.jurisdiction.code);
-          expect(deleted.jurisdiction.name)
-            .to.eql(status.jurisdiction.name);
-          done(error, deleted);
-
-        });
-
+        // assert jurisdiction
+        expect(deleted.jurisdiction).to.exist;
+        expect(deleted.jurisdiction.code).to.eql(status.jurisdiction.code);
+        expect(deleted.jurisdiction.name).to.eql(status.jurisdiction.name);
+        done(error, deleted);
+      });
     });
 
-    it('should throw if not exists', function (done) {
-
-      Status
-        .del(status._id, function (error, deleted) {
-          expect(error).to.exist;
-          expect(error.status).to.exist;
-          expect(error.message).to.be.equal('Not Found');
-          expect(deleted).to.not.exist;
-          done();
-        });
-
+    it('should throw if not exists', done => {
+      Status.del(status._id, (error, deleted) => {
+        expect(error).to.exist;
+        // expect(error.status).to.exist;
+        expect(error.name).to.be.equal('DocumentNotFoundError');
+        expect(deleted).to.not.exist;
+        done();
+      });
     });
-
   });
 
-  describe('instance delete', function () {
-
+  describe('instance delete', () => {
     let status;
 
-    before(function (done) {
+    before(done => {
       status = Status.fake();
-      status
-        .post(function (error, created) {
-          status = created;
-          done(error, created);
-        });
+      status.post((error, created) => {
+        status = created;
+        done(error, created);
+      });
     });
 
-    it('should be able to delete', function (done) {
-      status
-        .del(function (error, deleted) {
-          expect(error).to.not.exist;
-          expect(deleted).to.exist;
-          expect(deleted._id).to.eql(status._id);
-          done(error, deleted);
-        });
+    it('should be able to delete', done => {
+      status.del((error, deleted) => {
+        expect(error).to.not.exist;
+        expect(deleted).to.exist;
+        expect(deleted._id).to.eql(status._id);
+        done(error, deleted);
+      });
     });
 
-    it('should throw if not exists', function (done) {
-
-      status
-        .del(function (error, deleted) {
-          expect(error).to.not.exist;
-          expect(deleted).to.exist;
-          expect(deleted._id).to.eql(status._id);
-          done();
-        });
-
+    it('should throw if not exists', done => {
+      status.del((error, deleted) => {
+        expect(error).to.not.exist;
+        expect(deleted).to.exist;
+        expect(deleted._id).to.eql(status._id);
+        done();
+      });
     });
-
   });
 
-  after(function (done) {
-    Status.deleteMany(done);
+  after(done => {
+    clear(Status, Jurisdiction, done);
   });
-
-  after(function (done) {
-    Jurisdiction.deleteMany(done);
-  });
-
 });
