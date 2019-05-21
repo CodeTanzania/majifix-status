@@ -1,6 +1,4 @@
 import { pkg } from '@lykmapipo/common';
-import app, { Router } from '@lykmapipo/express-common';
-export { default as app } from '@lykmapipo/express-common';
 import _ from 'lodash';
 import async from 'async';
 import mongoose from 'mongoose';
@@ -10,6 +8,7 @@ import randomColor from 'randomcolor';
 import { getString, getStrings } from '@lykmapipo/env';
 import { schema, models } from '@codetanzania/majifix-common';
 import { Jurisdiction } from '@codetanzania/majifix-jurisdiction';
+import { Router } from '@lykmapipo/express-common';
 
 /**
  * @module Status
@@ -671,6 +670,7 @@ router.get(PATH_JURISDICTION, function getStatuses(request, response, next) {
 /* declarations */
 /* extract information from package.json */
 const info = pkg(
+  `${__dirname}/package.json`,
   'name',
   'description',
   'version',
@@ -684,8 +684,5 @@ const info = pkg(
 
 /* extract api version from router version */
 const apiVersion = router.version;
-
-/* bind status http router */
-app.mount(router);
 
 export { Status, apiVersion, info, router };
