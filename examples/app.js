@@ -5,14 +5,14 @@ process.env.MONGODB_URI =
 /* dependencies */
 const _ = require('lodash');
 const async = require('async');
-const app = require('@lykmapipo/express-common');
+const { app, mount, start } = require('@lykmapipo/express-common');
 const { connect, jsonSchema } = require('@lykmapipo/mongoose-common'); //eslint-disable-line
 const { Jurisdiction } = require('@codetanzania/majifix-jurisdiction');
 const { Status, apiVersion, info, router } = require('../lib/index');
 let samples = require('./samples')(20);
 
 /* connect to mongoose */
-app.mount(router);
+mount(router);
 
 connect(connectionError => {
   if (connectionError) {
@@ -68,7 +68,7 @@ connect(connectionError => {
       });
 
       /* fire the app */
-      app.start((error, env) => {
+      start((error, env) => {
         if (error) {
           throw error;
         }
