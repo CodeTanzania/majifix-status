@@ -1,131 +1,90 @@
-'use strict';
+import { expect } from 'chai';
+import { clear, create } from '@lykmapipo/mongoose-test-helpers';
+import { Jurisdiction } from '@codetanzania/majifix-jurisdiction';
+import { Status } from '../../src';
 
-/* dependencies */
-const path = require('path');
-const { expect } = require('chai');
-const { Jurisdiction } = require('@codetanzania/majifix-jurisdiction');
-const { Status } = require(path.join(__dirname, '..', '..'));
-
-describe('Status', function () {
-
+describe('Status', () => {
   let jurisdiction;
 
-  before(function (done) {
-    Jurisdiction.deleteMany(done);
+  before(done => {
+    clear(Status, Jurisdiction, done);
   });
 
-  before(function (done) {
+  before(done => {
     jurisdiction = Jurisdiction.fake();
-    jurisdiction.post(function (error, created) {
-      jurisdiction = created;
-      done(error, created);
-    });
+    create(jurisdiction, done);
   });
 
-  before(function (done) {
-    Status.deleteMany(done);
-  });
-
-  describe('static put', function () {
-
+  describe('static put', () => {
     let status;
 
-    before(function (done) {
+    before(done => {
       status = Status.fake();
       status.jurisdiction = jurisdiction;
-      status
-        .post(function (error, created) {
-          status = created;
-          done(error, created);
-        });
+      create(status, done);
     });
 
-    it('should be able to put', function (done) {
-
+    it('should be able to put', done => {
       status = status.fakeOnly('name');
 
-      Status
-        .put(status._id, status, function (error, updated) {
-          expect(error).to.not.exist;
-          expect(updated).to.exist;
-          expect(updated._id).to.eql(status._id);
-          expect(updated.name.en).to.equal(status.name.en);
+      Status.put(status._id, status, (error, updated) => {
+        expect(error).to.not.exist;
+        expect(updated).to.exist;
+        expect(updated._id).to.eql(status._id);
+        expect(updated.name.en).to.equal(status.name.en);
 
-          //assert jurisdiction
-          expect(updated.jurisdiction).to.exist;
-          expect(updated.jurisdiction.code)
-            .to.eql(status.jurisdiction.code);
-          expect(updated.jurisdiction.name)
-            .to.eql(status.jurisdiction.name);
-          done(error, updated);
-        });
-
+        // assert jurisdiction
+        expect(updated.jurisdiction).to.exist;
+        expect(updated.jurisdiction.code).to.eql(status.jurisdiction.code);
+        expect(updated.jurisdiction.name).to.eql(status.jurisdiction.name);
+        done(error, updated);
+      });
     });
 
-    it('should throw if not exists', function (done) {
-
+    it('should throw if not exists', done => {
       const fake = Status.fake();
 
-      Status
-        .put(fake._id, fake, function (error, updated) {
-          expect(error).to.exist;
-          expect(error.status).to.exist;
-          expect(error.message).to.be.equal('Not Found');
-          expect(updated).to.not.exist;
-          done();
-        });
-
+      Status.put(fake._id, fake, (error, updated) => {
+        expect(error).to.exist;
+        expect(error.status).to.exist;
+        expect(error.message).to.be.equal('Not Found');
+        expect(updated).to.not.exist;
+        done();
+      });
     });
-
   });
 
-  describe('instance put', function () {
-
+  describe('instance put', () => {
     let status;
 
-    before(function (done) {
+    before(done => {
       status = Status.fake();
-      status
-        .post(function (error, created) {
-          status = created;
-          done(error, created);
-        });
+      create(status, done);
     });
 
-    it('should be able to put', function (done) {
+    it('should be able to put', done => {
       status = status.fakeOnly('name');
 
-      status
-        .put(function (error, updated) {
-          expect(error).to.not.exist;
-          expect(updated).to.exist;
-          expect(updated._id).to.eql(status._id);
-          expect(updated.name.en).to.equal(status.name.en);
-          done(error, updated);
-        });
-
+      status.put((error, updated) => {
+        expect(error).to.not.exist;
+        expect(updated).to.exist;
+        expect(updated._id).to.eql(status._id);
+        expect(updated.name.en).to.equal(status.name.en);
+        done(error, updated);
+      });
     });
 
-    it('should throw if not exists', function (done) {
-
-      status
-        .put(function (error, updated) {
-          expect(error).to.not.exist;
-          expect(updated).to.exist;
-          expect(updated._id).to.eql(status._id);
-          done();
-        });
-
+    it('should throw if not exists', done => {
+      status.put((error, updated) => {
+        expect(error).to.not.exist;
+        expect(updated).to.exist;
+        expect(updated._id).to.eql(status._id);
+        done();
+      });
     });
-
   });
 
-  after(function (done) {
-    Status.deleteMany(done);
+  after(done => {
+    clear(Status, Jurisdiction, done);
   });
-
-  after(function (done) {
-    Jurisdiction.deleteMany(done);
-  });
-
 });

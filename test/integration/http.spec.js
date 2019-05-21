@@ -1,37 +1,32 @@
-'use strict';
+import request from 'supertest';
+import app from '@lykmapipo/express-common';
+import { expect } from 'chai';
+import { clear } from '@lykmapipo/mongoose-test-helpers';
+import { Status, apiVersion, router } from '../../src';
 
-/* dependencies */
-const path = require('path');
-const request = require('supertest');
-const { expect } = require('chai');
-const {
-  Status,
-  apiVersion,
-  app
-} = require(path.join(__dirname, '..', '..'));
+/* declarations */
+app.mount(router);
 
+const { testApp } = app;
 
-describe('Status', function () {
-
-  describe('Rest API', function () {
-
-    before(function (done) {
-      Status.deleteMany(done);
+describe('Status', () => {
+  describe('Rest API', () => {
+    before(done => {
+      clear(Status, done);
     });
 
     let status;
 
-    it('should handle HTTP POST on /statuses', function (done) {
-
+    it('should handle HTTP POST on /statuses', done => {
       status = Status.fake();
 
-      request(app)
-        .post(`/v${apiVersion}/statuses`)
+      request(testApp)
+        .post(`/${apiVersion}/statuses`)
         .set('Accept', 'application/json')
         .set('Content-Type', 'application/json')
         .send(status)
         .expect(201)
-        .end(function (error, response) {
+        .end((error, response) => {
           expect(error).to.not.exist;
           expect(response).to.exist;
 
@@ -41,23 +36,20 @@ describe('Status', function () {
           expect(created.name).to.exist;
 
           done(error, response);
-
         });
-
     });
 
-    it('should handle HTTP GET on /statuses', function (done) {
-
-      request(app)
-        .get(`/v${apiVersion}/statuses`)
+    it('should handle HTTP GET on /statuses', done => {
+      request(testApp)
+        .get(`/${apiVersion}/statuses`)
         .set('Accept', 'application/json')
         .expect(200)
         .expect('Content-Type', /json/)
-        .end(function (error, response) {
+        .end((error, response) => {
           expect(error).to.not.exist;
           expect(response).to.exist;
 
-          //assert payload
+          // assert payload
           const result = response.body;
           expect(result.data).to.exist;
           expect(result.total).to.exist;
@@ -67,18 +59,15 @@ describe('Status', function () {
           expect(result.pages).to.exist;
           expect(result.lastModified).to.exist;
           done(error, response);
-
         });
-
     });
 
-    it('should handle HTTP GET on /statuses/id:', function (done) {
-
-      request(app)
-        .get(`/v${apiVersion}/statuses/${status._id}`)
+    it('should handle HTTP GET on /statuses/id:', done => {
+      request(testApp)
+        .get(`/${apiVersion}/statuses/${status._id}`)
         .set('Accept', 'application/json')
         .expect(200)
-        .end(function (error, response) {
+        .end((error, response) => {
           expect(error).to.not.exist;
           expect(response).to.exist;
 
@@ -88,22 +77,19 @@ describe('Status', function () {
           expect(found.name.en).to.be.equal(status.name.en);
 
           done(error, response);
-
         });
-
     });
 
-    it('should handle HTTP PATCH on /statuses/id:', function (done) {
-
+    it('should handle HTTP PATCH on /statuses/id:', done => {
       const patch = status.fakeOnly('name');
 
-      request(app)
-        .patch(`/v${apiVersion}/statuses/${status._id}`)
+      request(testApp)
+        .patch(`/${apiVersion}/statuses/${status._id}`)
         .set('Accept', 'application/json')
         .set('Content-Type', 'application/json')
         .send(patch)
         .expect(200)
-        .end(function (error, response) {
+        .end((error, response) => {
           expect(error).to.not.exist;
           expect(response).to.exist;
 
@@ -114,22 +100,19 @@ describe('Status', function () {
           expect(patched.name.en).to.be.equal(status.name.en);
 
           done(error, response);
-
         });
-
     });
 
-    it('should handle HTTP PUT on /statuses/id:', function (done) {
-
+    it('should handle HTTP PUT on /statuses/id:', done => {
       const put = status.fakeOnly('name');
 
-      request(app)
-        .put(`/v${apiVersion}/statuses/${status._id}`)
+      request(testApp)
+        .put(`/${apiVersion}/statuses/${status._id}`)
         .set('Accept', 'application/json')
         .set('Content-Type', 'application/json')
         .send(put)
         .expect(200)
-        .end(function (error, response) {
+        .end((error, response) => {
           expect(error).to.not.exist;
           expect(response).to.exist;
 
@@ -140,18 +123,15 @@ describe('Status', function () {
           expect(updated.name.en).to.be.equal(status.name.en);
 
           done(error, response);
-
         });
-
     });
 
-    it('should handle HTTP DELETE on /statuses/:id', function (done) {
-
-      request(app)
-        .delete(`/v${apiVersion}/statuses/${status._id}`)
+    it('should handle HTTP DELETE on /statuses/:id', done => {
+      request(testApp)
+        .delete(`/${apiVersion}/statuses/${status._id}`)
         .set('Accept', 'application/json')
         .expect(200)
-        .end(function (error, response) {
+        .end((error, response) => {
           expect(error).to.not.exist;
           expect(response).to.exist;
 
@@ -162,15 +142,11 @@ describe('Status', function () {
           expect(deleted.name.en).to.be.equal(status.name.en);
 
           done(error, response);
-
         });
-
     });
 
-    after(function (done) {
-      Status.deleteMany(done);
+    after(done => {
+      clear(Status, done);
     });
-
   });
-
 });

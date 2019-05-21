@@ -1,6 +1,3 @@
-'use strict';
-
-
 /**
  * @apiDefine Status  Status
  *
@@ -15,7 +12,6 @@
  * @version 1.0.0
  * @public
  */
-
 
 /**
  * @apiDefine Status
@@ -33,7 +29,6 @@
  * @apiSuccess {Date} updatedAt Date when status was last updated
  *
  */
-
 
 /**
  * @apiDefine Statuses
@@ -61,7 +56,6 @@
  *
  */
 
-
 /**
  * @apiDefine StatusSuccessResponse
  * @apiSuccessExample {json} Success-Response:
@@ -81,7 +75,6 @@
  *    "updatedAt": "2018-05-06T10:16:19.230Z",
  *  }
  */
-
 
 /**
  * @apiDefine StatusesSuccessResponse
@@ -114,27 +107,22 @@
  * }
  */
 
-
 /* dependencies */
-const path = require('path');
-const _ = require('lodash');
-const Router = require('@lykmapipo/express-common').Router;
-const { env } = require('@codetanzania/majifix-common');
-
+import { Router } from '@lykmapipo/express-common';
+import { getString } from '@lykmapipo/env';
+import _ from 'lodash';
+import Status from './status.model';
 
 /* local constants */
-const API_VERSION = env.API_VERSION;
+const API_VERSION = getString('API_VERSION', '1.0.0');
 const PATH_LIST = '/statuses';
 const PATH_SINGLE = '/statuses/:id';
 const PATH_JURISDICTION = '/jurisdictions/:jurisdiction/statuses';
 
-
 /* declarations */
-const Status = require(path.join(__dirname, 'status.model'));
 const router = new Router({
-  version: API_VERSION
+  version: API_VERSION,
 });
-
 
 /**
  * @api {get} /statuses List Statuses
@@ -154,28 +142,22 @@ const router = new Router({
  * @apiUse AuthorizationHeaderErrorExample
  */
 router.get(PATH_LIST, function getStatuses(request, response, next) {
-
-  //obtain request options
+  // obtain request options
   const options = _.merge({}, request.mquery);
 
-  Status
-    .get(options, function onGetStatuses(error, results) {
+  Status.get(options, function onGetStatuses(error, results) {
+    // forward error
+    if (error) {
+      next(error);
+    }
 
-      //forward error
-      if (error) {
-        next(error);
-      }
-
-      //handle response
-      else {
-        response.status(200);
-        response.json(results);
-      }
-
-    });
-
+    // handle response
+    else {
+      response.status(200);
+      response.json(results);
+    }
+  });
 });
-
 
 /**
  * @api {post} /statuses Create New Status
@@ -195,28 +177,22 @@ router.get(PATH_LIST, function getStatuses(request, response, next) {
  * @apiUse AuthorizationHeaderErrorExample
  */
 router.post(PATH_LIST, function postStatus(request, response, next) {
-
-  //obtain request body
+  // obtain request body
   const body = _.merge({}, request.body);
 
-  Status
-    .post(body, function onPostStatus(error, created) {
+  Status.post(body, function onPostStatus(error, created) {
+    // forward error
+    if (error) {
+      next(error);
+    }
 
-      //forward error
-      if (error) {
-        next(error);
-      }
-
-      //handle response
-      else {
-        response.status(201);
-        response.json(created);
-      }
-
-    });
-
+    // handle response
+    else {
+      response.status(201);
+      response.json(created);
+    }
+  });
 });
-
 
 /**
  * @api {get} /statuses/:id Get Existing Status
@@ -236,31 +212,25 @@ router.post(PATH_LIST, function postStatus(request, response, next) {
  * @apiUse AuthorizationHeaderErrorExample
  */
 router.get(PATH_SINGLE, function getStatus(request, response, next) {
-
-  //obtain request options
+  // obtain request options
   const options = _.merge({}, request.mquery);
 
-  //obtain status id
-  options._id = request.params.id;
+  // obtain status id
+  options._id = request.params.id; // eslint-disable-line
 
-  Status
-    .getById(options, function onGetStatus(error, found) {
+  Status.getById(options, function onGetStatus(error, found) {
+    // forward error
+    if (error) {
+      next(error);
+    }
 
-      //forward error
-      if (error) {
-        next(error);
-      }
-
-      //handle response
-      else {
-        response.status(200);
-        response.json(found);
-      }
-
-    });
-
+    // handle response
+    else {
+      response.status(200);
+      response.json(found);
+    }
+  });
 });
-
 
 /**
  * @api {patch} /statuses/:id Patch Existing Status
@@ -280,31 +250,25 @@ router.get(PATH_SINGLE, function getStatus(request, response, next) {
  * @apiUse AuthorizationHeaderErrorExample
  */
 router.patch(PATH_SINGLE, function patchStatus(request, response, next) {
-
-  //obtain status id
+  // obtain status id
   const { id } = request.params;
 
-  //obtain request body
+  // obtain request body
   const patches = _.merge({}, request.body);
 
-  Status
-    .patch(id, patches, function onPatchStatus(error, patched) {
+  Status.patch(id, patches, function onPatchStatus(error, patched) {
+    // forward error
+    if (error) {
+      next(error);
+    }
 
-      //forward error
-      if (error) {
-        next(error);
-      }
-
-      //handle response
-      else {
-        response.status(200);
-        response.json(patched);
-      }
-
-    });
-
+    // handle response
+    else {
+      response.status(200);
+      response.json(patched);
+    }
+  });
 });
-
 
 /**
  * @api {put} /statuses/:id Put Existing Status
@@ -324,31 +288,25 @@ router.patch(PATH_SINGLE, function patchStatus(request, response, next) {
  * @apiUse AuthorizationHeaderErrorExample
  */
 router.put(PATH_SINGLE, function putStatus(request, response, next) {
-
-  //obtain status id
+  // obtain status id
   const { id } = request.params;
 
-  //obtain request body
+  // obtain request body
   const updates = _.merge({}, request.body);
 
-  Status
-    .put(id, updates, function onPutStatus(error, updated) {
+  Status.put(id, updates, function onPutStatus(error, updated) {
+    // forward error
+    if (error) {
+      next(error);
+    }
 
-      //forward error
-      if (error) {
-        next(error);
-      }
-
-      //handle response
-      else {
-        response.status(200);
-        response.json(updated);
-      }
-
-    });
-
+    // handle response
+    else {
+      response.status(200);
+      response.json(updated);
+    }
+  });
 });
-
 
 /**
  * @api {delete} /statuses/:id Delete Existing Status
@@ -368,29 +326,22 @@ router.put(PATH_SINGLE, function putStatus(request, response, next) {
  * @apiUse AuthorizationHeaderErrorExample
  */
 router.delete(PATH_SINGLE, function deleteStatus(request, response, next) {
-
-  //obtain status id
+  // obtain status id
   const { id } = request.params;
 
-  Status
-    .del(id, function onDeleteStatus(error, deleted) {
+  Status.del(id, function onDeleteStatus(error, deleted) {
+    // forward error
+    if (error) {
+      next(error);
+    }
 
-      //forward error
-      if (error) {
-        console.log(error);
-        next(error);
-      }
-
-      //handle response
-      else {
-        response.status(200);
-        response.json(deleted);
-      }
-
-    });
-
+    // handle response
+    else {
+      response.status(200);
+      response.json(deleted);
+    }
+  });
 });
-
 
 /**
  * @api {get} /jurisdictions/:jurisdiction/statuses List Jurisdiction Statuses
@@ -410,33 +361,24 @@ router.delete(PATH_SINGLE, function deleteStatus(request, response, next) {
  * @apiUse AuthorizationHeaderErrorExample
  */
 router.get(PATH_JURISDICTION, function getStatuses(request, response, next) {
-
-  //obtain request options
+  // obtain request options
   const { jurisdiction } = request.params;
-  const filter =
-    (jurisdiction ? { filter: { jurisdiction: jurisdiction } } : {}); //TODO support parent and no jurisdiction
-  const options =
-    _.merge({}, filter, request.mquery);
+  const filter = jurisdiction ? { filter: { jurisdiction } } : {}; // TODO support parent and no jurisdiction
+  const options = _.merge({}, filter, request.mquery);
 
+  Status.get(options, function onGetStatuses(error, found) {
+    // forward error
+    if (error) {
+      next(error);
+    }
 
-  Status
-    .get(options, function onGetStatuses(error, found) {
-
-      //forward error
-      if (error) {
-        next(error);
-      }
-
-      //handle response
-      else {
-        response.status(200);
-        response.json(found);
-      }
-
-    });
-
+    // handle response
+    else {
+      response.status(200);
+      response.json(found);
+    }
+  });
 });
 
-
 /* expose router */
-module.exports = router;
+export default router;
