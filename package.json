@@ -96,7 +96,7 @@
   "dependencies": {
     "@codetanzania/majifix-common": ">=0.12.4",
     "@codetanzania/majifix-jurisdiction": ">=1.5.5",
-    "@lykmapipo/common": "^0.18.0",
+    "@lykmapipo/common": "^0.19.0",
     "@lykmapipo/env": "^0.7.7",
     "@lykmapipo/express-common": ">=0.17.3",
     "async": ">=3.0.0",
