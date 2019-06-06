@@ -1,3 +1,9 @@
+#### 1.4.8 (2019-06-06)
+
+##### Documentation Changes
+
+- **changelog:** generate latest release notes ([948d4781](https://github.com/CodeTanzania/majifix-status/commit/948d47815bb9e8b7bfa05cb00d069583924b80dc))
+
 #### 1.4.6 (2019-05-21)
 
 ##### Build System / Dependencies
