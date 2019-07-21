@@ -63,7 +63,7 @@
     "@lykmapipo/mongoose-test-helpers": "0.7.15",
     "chai": "4.2.0",
     "commitizen": "4.0.3",
-    "cz-conventional-changelog": "3.0.1",
+    "cz-conventional-changelog": "3.0.2",
     "eslint": "6.1.0",
     "eslint-config-airbnb-base": "13.2.0",
     "eslint-config-prettier": "6.0.0",
