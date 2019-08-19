@@ -1,5 +1,4 @@
-/* dependencies */
-import { expect } from 'chai';
+import { expect } from '@lykmapipo/mongoose-test-helpers';
 import Status from '../../src/status.model';
 
 describe('Status', () => {
@@ -17,9 +16,9 @@ describe('Status', () => {
       });
     });
 
-    it('should expose default locale `en` when not set', () => {
-      expect(Status.DEFAULT_LOCALE).to.exist;
-      expect(Status.DEFAULT_LOCALE).to.equal('en');
+    it('should expose field select option', () => {
+      expect(Status.OPTION_SELECT).to.exist;
+      expect(Status.OPTION_SELECT).to.be.eql({ name: 1, color: 1 });
     });
   });
 });
