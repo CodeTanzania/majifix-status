@@ -1,7 +1,7 @@
 import { expect, clear } from '@lykmapipo/mongoose-test-helpers';
 import { Status } from '../../src/index';
 
-describe.only('Status getOneOrDefault', () => {
+describe('Status getOneOrDefault', () => {
   before(done => clear(done));
 
   let status = Status.fake();
