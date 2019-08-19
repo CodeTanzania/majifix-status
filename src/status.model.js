@@ -15,44 +15,36 @@
  * @version 1.0.0
  * @public
  */
-
-/**
- * @todo add schema additions(openedAt, escallatedAt etc) into
- * service request model based on existing statuses
- */
-
-/* dependencies */
 import _ from 'lodash';
-import async from 'async';
-import mongoose from 'mongoose';
-import localize from 'mongoose-locale-schema';
+import { idOf, randomColor, compact, mergeObjects } from '@lykmapipo/common';
+import { createSchema, model, ObjectId } from '@lykmapipo/mongoose-common';
+import {
+  localize,
+  localizedIndexesFor,
+  localizedKeysFor,
+  localizedValuesFor,
+} from 'mongoose-locale-schema';
 import actions from 'mongoose-rest-actions';
-import randomColor from 'randomcolor';
-import { getString, getStrings } from '@lykmapipo/env';
-import { schema, models } from '@codetanzania/majifix-common';
+import exportable from '@lykmapipo/mongoose-exportable';
 import { Jurisdiction } from '@codetanzania/majifix-jurisdiction';
+import {
+  POPULATION_MAX_DEPTH,
+  MODEL_NAME_STATUS,
+  MODEL_NAME_SERVICE,
+  MODEL_NAME_SERVICEREQUEST,
+  COLLECTION_NAME_STATUS,
+  PATH_NAME_STATUS,
+  checkDependenciesFor,
+} from '@codetanzania/majifix-common';
 
-/* local constants */
-const { Schema } = mongoose;
-const { ObjectId } = Schema.Types;
-const DEFAULT_LOCALE = getString('DEFAULT_LOCALE', 'en');
-const JURISDICTION_PATH = 'jurisdiction';
-const SCHEMA_OPTIONS = { timestamps: true, emitIndexErrors: true };
+/* constants */
+const OPTION_SELECT = { name: 1, color: 1 };
 const OPTION_AUTOPOPULATE = {
-  select: { name: 1, color: 1 },
-  maxDepth: schema.POPULATION_MAX_DEPTH,
+  select: OPTION_SELECT,
+  maxDepth: POPULATION_MAX_DEPTH,
 };
-const { STATUS_MODEL_NAME, SERVICEREQUEST_MODEL_NAME, getModel } = models;
-
-/* declarations */
-let locales = getStrings('LOCALES', ['en']);
-locales = _.map(locales, locale => {
-  const option = { name: locale };
-  if (locale === DEFAULT_LOCALE) {
-    option.required = true;
-  }
-  return option;
-});
+const SCHEMA_OPTIONS = { collection: COLLECTION_NAME_STATUS };
+const INDEX_UNIQUE = { jurisdiction: 1, ...localizedIndexesFor('name') };
 
 /**
  * @name StatusSchema
@@ -61,7 +53,7 @@ locales = _.map(locales, locale => {
  * @version 1.0.0
  * @private
  */
-const StatusSchema = new Schema(
+const StatusSchema = createSchema(
   {
     /**
      * @name jurisdiction
@@ -77,6 +69,8 @@ const StatusSchema = new Schema(
      * @property {string} ref - referenced collection
      * @property {boolean} exists - ensure ref exists before save
      * @property {object} autopopulate - jurisdiction population options
+     * @property {object} autopopulate.select - jurisdiction fields to
+     * select when populating
      * @property {boolean} index - ensure database index
      *
      * @since 0.1.0
@@ -86,7 +80,7 @@ const StatusSchema = new Schema(
     jurisdiction: {
       type: ObjectId,
       ref: Jurisdiction.MODEL_NAME,
-      exists: true,
+      exists: { refresh: true, select: Jurisdiction.OPTION_SELECT },
       autopopulate: Jurisdiction.OPTION_AUTOPOPULATE,
       index: true,
     },
@@ -101,8 +95,9 @@ const StatusSchema = new Schema(
      * @property {boolean} trim - force trimming
      * @property {boolean} required - mark required
      * @property {boolean} index - ensure database index
+     * @property {boolean} taggable - allow field use for tagging
+     * @property {boolean} exportable - allow field to be exported
      * @property {boolean} searchable - allow for searching
-     * @property {string[]}  locales - list of supported locales
      * @property {object} fake - fake data generator options
      *
      * @since 0.1.0
@@ -112,10 +107,10 @@ const StatusSchema = new Schema(
     name: localize({
       type: String,
       trim: true,
-      required: true,
       index: true,
+      taggable: true,
+      exportable: true,
       searchable: true,
-      locales,
       fake: {
         generator: 'commerce',
         type: 'productName',
@@ -131,6 +126,7 @@ const StatusSchema = new Schema(
      * @type {object}
      * @property {object} type - schema(data) type
      * @property {boolean} index - ensure database index
+     * @property {boolean} exportable - allow field to be exported
      * @property {boolean} default - default value set when none provided
      * @property {object} fake - fake data generator options
      *
@@ -141,6 +137,7 @@ const StatusSchema = new Schema(
     weight: {
       type: Number,
       index: true,
+      exportable: true,
       default: 0,
       fake: true,
     },
@@ -154,6 +151,7 @@ const StatusSchema = new Schema(
      * @property {object} type - schema(data) type
      * @property {boolean} trim - force trimming
      * @property {boolean} uppercase - force upper-casing
+     * @property {boolean} exportable - allow field to be exported
      * @property {boolean} default - default value set when none provided
      * @property {object} fake - fake data generator options
      *
@@ -164,14 +162,42 @@ const StatusSchema = new Schema(
     color: {
       type: String,
       trim: true,
+      exportable: true,
       uppercase: true,
-      default: () => {
-        return randomColor().toUpperCase();
-      },
+      default: () => randomColor(),
+      fake: true,
+    },
+
+    /**
+     * @name default
+     * @description Tells whether a status is the default.
+     *
+     * @type {object}
+     * @property {object} type - schema(data) type
+     * @property {boolean} index - ensure database index
+     * @property {boolean} exportable - allow field to be exported
+     * @property {boolean} default - default value set when none provided
+     * @property {object|boolean} fake - fake data generator options
+     *
+     * @author lally elias <lallyelias87@gmail.com>
+     * @since 0.1.0
+     * @version 0.1.0
+     * @instance
+     * @example
+     * false
+     *
+     */
+    default: {
+      type: Boolean,
+      index: true,
+      exportable: true,
+      default: false,
       fake: true,
     },
   },
-  SCHEMA_OPTIONS
+  SCHEMA_OPTIONS,
+  actions,
+  exportable
 );
 
 /*
@@ -180,13 +206,17 @@ const StatusSchema = new Schema(
  *------------------------------------------------------------------------------
  */
 
-// ensure `unique` compound index on jurisdiction and name
-// to fix unique indexes on name in case they are used in more than
-// one jurisdiction with different administration
-_.forEach(locales, locale => {
-  const field = `name.${locale.name}`;
-  StatusSchema.index({ jurisdiction: 1, [field]: 1 }, { unique: true });
-});
+/**
+ * @name index
+ * @description ensure unique compound index on status name and jurisdiction
+ * to force unique status definition
+ *
+ * @author lally elias <lallyelias87@gmail.com>
+ * @since 0.1.0
+ * @version 0.1.0
+ * @private
+ */
+StatusSchema.index(INDEX_UNIQUE, { unique: true });
 
 /*
  *------------------------------------------------------------------------------
@@ -194,13 +224,16 @@ _.forEach(locales, locale => {
  *------------------------------------------------------------------------------
  */
 
+/**
+ * @name validate
+ * @description status schema pre validation hook
+ * @param {function} done callback to invoke on success or error
+ * @since 0.1.0
+ * @version 1.0.0
+ * @private
+ */
 StatusSchema.pre('validate', function preValidate(next) {
-  // set default color if not set
-  if (_.isEmpty(this.color)) {
-    this.color = randomColor().toUpperCase();
-  }
-
-  next();
+  return this.preValidate(next);
 });
 
 /*
@@ -208,6 +241,24 @@ StatusSchema.pre('validate', function preValidate(next) {
  * Instance
  *------------------------------------------------------------------------------
  */
+
+/**
+ * @name preValidate
+ * @description status schema pre validation hook logic
+ * @param {function} done callback to invoke on success or error
+ * @since 0.1.0
+ * @version 1.0.0
+ * @instance
+ */
+StatusSchema.methods.preValidate = function preValidate(done) {
+  // set default color if not set
+  if (_.isEmpty(this.color)) {
+    this.color = randomColor();
+  }
+
+  // continue
+  return done();
+};
 
 /**
  * @name beforeDelete
@@ -222,103 +273,14 @@ StatusSchema.pre('validate', function preValidate(next) {
 StatusSchema.methods.beforeDelete = function beforeDelete(done) {
   // restrict delete if
 
-  async.parallel(
-    {
-      // 1...there are service request use the status
-      serviceRequest: function checkServiceRequestDependency(next) {
-        // get service request model
-        const ServiceRequest = getModel(SERVICEREQUEST_MODEL_NAME);
+  // collect dependencies model name
+  const dependencies = [MODEL_NAME_SERVICE, MODEL_NAME_SERVICEREQUEST];
 
-        // check service request dependency
-        if (ServiceRequest) {
-          ServiceRequest.count(
-            { status: this._id }, // eslint-disable-line
-            function getDependantsCount(countingError, count) {
-              let error = countingError;
-              // warning can not delete
-              if (count && count > 0) {
-                const errorMessage = `Fail to Delete. ${count} service requests depend on it`;
-                error = new Error(errorMessage);
-              }
+  // path to check
+  const path = PATH_NAME_STATUS;
 
-              // ensure error status
-              if (error) {
-                error.status = 400;
-              }
-
-              // return
-              next(error, this);
-            }.bind(this)
-          );
-        }
-
-        // continue
-        else {
-          next();
-        }
-      }.bind(this),
-    },
-    function onComplete(error) {
-      done(error, this);
-    }
-  );
-};
-
-/**
- * @name beforePost
- * @function beforePost
- * @description pre save status logics
- * @param  {function} done callback to invoke on success or error
- *
- * @since 0.1.0
- * @version 1.0.0
- * @instance
- */
-StatusSchema.methods.beforePost = function beforePost(done) {
-  // ensure jurisdiction is pre loaded before post(save)
-  const jurisdictionId = this.jurisdiction
-    ? this.jurisdiction._id // eslint-disable-line
-    : this.jurisdiction;
-
-  // prefetch existing jurisdiction
-  if (jurisdictionId) {
-    Jurisdiction.getById(
-      jurisdictionId,
-      function onGetById(error, jurisdiction) {
-        // assign existing jurisdiction
-        if (jurisdiction) {
-          this.jurisdiction = jurisdiction;
-        }
-
-        // return
-        done(error, this);
-      }.bind(this)
-    );
-  }
-
-  // continue
-  else {
-    done();
-  }
-};
-
-/**
- * @name afterPost
- * @function afterPost
- * @description post save status logics
- * @param  {function} done callback to invoke on success or error
- * @since 0.1.0
- * @version 1.0.0
- * @instance
- */
-StatusSchema.methods.afterPost = function afterPost(done) {
-  // ensure jurisdiction is populated after post(save)
-  const population = _.merge(
-    {},
-    { path: JURISDICTION_PATH },
-    Jurisdiction.OPTION_AUTOPOPULATE
-  );
-  this.populate(population, done);
+  // do check dependencies
+  return checkDependenciesFor(this, { path, dependencies }, done);
 };
 
 /*
@@ -326,6 +288,11 @@ StatusSchema.methods.afterPost = function afterPost(done) {
  * Statics
  *------------------------------------------------------------------------------
  */
+
+/* static constants */
+StatusSchema.statics.MODEL_NAME = MODEL_NAME_STATUS;
+StatusSchema.statics.OPTION_SELECT = OPTION_SELECT;
+StatusSchema.statics.OPTION_AUTOPOPULATE = OPTION_AUTOPOPULATE;
 
 /**
  * @name findDefault
@@ -337,33 +304,84 @@ StatusSchema.methods.afterPost = function afterPost(done) {
  * @version 1.0.0
  * @static
  */
-StatusSchema.statics.findDefault = function findDefault(done) {
-  // reference status
-  const Status = this;
+StatusSchema.statics.findDefault = done => {
+  // refs
+  const Status = model(MODEL_NAME_STATUS);
 
-  // TODO make use of default status settings
-  // TODO cache in memory
+  // obtain default status
+  return Status.getOneOrDefault({}, done);
+};
 
-  // sort status by weight descending and take one
-  Status.findOne()
-    .sort({ weight: 'asc' })
+/**
+ * @name prepareSeedCriteria
+ * @function prepareSeedCriteria
+ * @description define seed data criteria
+ * @param {Object} seed status to be seeded
+ * @returns {Object} packed criteria for seeding
+ *
+ * @author lally elias <lallyelias87@gmail.com>
+ * @since 1.5.0
+ * @version 0.1.0
+ * @static
+ */
+StatusSchema.statics.prepareSeedCriteria = seed => {
+  const names = localizedKeysFor('name');
+
+  const copyOfSeed = seed;
+  copyOfSeed.name = localizedValuesFor(seed.name);
+
+  const criteria = idOf(copyOfSeed)
+    ? _.pick(copyOfSeed, '_id')
+    : _.pick(copyOfSeed, 'jurisdiction', ...names);
+
+  return criteria;
+};
+
+/**
+ * @name getOneOrDefault
+ * @function getOneOrDefault
+ * @description Find existing status or default based on given criteria
+ * @param {Object} criteria valid query criteria
+ * @param {Function} done callback to invoke on success or error
+ * @returns {Object|Error} found status or error
+ *
+ * @author lally elias <lallyelias87@gmail.com>
+ * @since 1.5.0
+ * @version 0.1.0
+ * @static
+ * @example
+ *
+ * const criteria = { _id: '...'};
+ * Status.getOneOrDefault(criteria, (error, found) => { ... });
+ *
+ */
+StatusSchema.statics.getOneOrDefault = (criteria, done) => {
+  // normalize criteria
+  const { _id, ...filters } = mergeObjects(criteria);
+
+  const allowDefault = true;
+  const allowId = !_.isEmpty(_id);
+  const allowFilters = !_.isEmpty(filters);
+
+  const byDefault = mergeObjects({ default: true });
+  const byId = mergeObjects({ _id });
+  const byFilters = mergeObjects(filters);
+
+  const or = compact([
+    allowId ? byId : undefined,
+    allowFilters ? byFilters : undefined,
+    allowDefault ? byDefault : undefined,
+  ]);
+  const filter = { $or: or };
+
+  // refs
+  const Status = model(MODEL_NAME_STATUS);
+
+  // query
+  return Status.findOne(filter)
+    .orFail()
     .exec(done);
 };
 
-/* expose static constants */
-StatusSchema.statics.MODEL_NAME = STATUS_MODEL_NAME;
-StatusSchema.statics.OPTION_AUTOPOPULATE = OPTION_AUTOPOPULATE;
-StatusSchema.statics.DEFAULT_LOCALE = DEFAULT_LOCALE;
-
-/*
- *------------------------------------------------------------------------------
- * Plugins
- *------------------------------------------------------------------------------
- */
-
-/* use mongoose rest actions */
-StatusSchema.plugin(actions);
-
 /* export status model */
-
-export default mongoose.model(STATUS_MODEL_NAME, StatusSchema);
+export default model(MODEL_NAME_STATUS, StatusSchema);
