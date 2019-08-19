@@ -1,7 +1,5 @@
-/* dependencies */
-import { expect } from 'chai';
 import { Jurisdiction } from '@codetanzania/majifix-jurisdiction';
-import { clear, create } from '@lykmapipo/mongoose-test-helpers';
+import { clear, create, expect } from '@lykmapipo/mongoose-test-helpers';
 import { Status } from '../../src';
 
 describe('Status', () => {
@@ -21,6 +19,7 @@ describe('Status', () => {
 
     before(done => {
       status = Status.fake();
+      status.default = true;
       status.jurisdiction = jurisdiction;
       status.post((error, created) => {
         status = created;
