@@ -1,7 +1,6 @@
 import request from 'supertest';
 import { app, mount } from '@lykmapipo/express-common';
-import { expect } from 'chai';
-import { clear } from '@lykmapipo/mongoose-test-helpers';
+import { clear, expect } from '@lykmapipo/mongoose-test-helpers';
 import { Status, apiVersion, router } from '../../src';
 
 /* declarations */

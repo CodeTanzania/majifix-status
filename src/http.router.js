@@ -106,17 +106,26 @@
  *   "lastModified": "2018-05-06T10:19:04.910Z"
  * }
  */
-
-/* dependencies */
-import { Router } from '@lykmapipo/express-common';
 import { getString } from '@lykmapipo/env';
-import _ from 'lodash';
+import {
+  getFor,
+  schemaFor,
+  downloadFor,
+  getByIdFor,
+  postFor,
+  patchFor,
+  putFor,
+  deleteFor,
+  Router,
+} from '@lykmapipo/express-rest-actions';
 import Status from './status.model';
 
-/* local constants */
+/* constants */
 const API_VERSION = getString('API_VERSION', '1.0.0');
-const PATH_LIST = '/statuses';
 const PATH_SINGLE = '/statuses/:id';
+const PATH_LIST = '/statuses';
+const PATH_EXPORT = '/statuses/export';
+const PATH_SCHEMA = '/statuses/schema/';
 const PATH_JURISDICTION = '/jurisdictions/:jurisdiction/statuses';
 
 /* declarations */
@@ -141,23 +150,49 @@ const router = new Router({
  * @apiUse AuthorizationHeaderError
  * @apiUse AuthorizationHeaderErrorExample
  */
-router.get(PATH_LIST, function getStatuses(request, response, next) {
-  // obtain request options
-  const options = _.merge({}, request.mquery);
+router.get(
+  PATH_LIST,
+  getFor({
+    get: (options, done) => Status.get(options, done),
+  })
+);
 
-  Status.get(options, function onGetStatuses(error, results) {
-    // forward error
-    if (error) {
-      next(error);
-    }
+/**
+ * @api {get} /statuses/schema Get Status Schema
+ * @apiVersion 1.0.0
+ * @apiName GetStatusSchema
+ * @apiGroup Status
+ * @apiDescription Returns status json schema definition
+ * @apiUse RequestHeaders
+ */
+router.get(
+  PATH_SCHEMA,
+  schemaFor({
+    getSchema: (query, done) => {
+      const jsonSchema = Status.jsonSchema();
+      return done(null, jsonSchema);
+    },
+  })
+);
 
-    // handle response
-    else {
-      response.status(200);
-      response.json(results);
-    }
-  });
-});
+/**
+ * @api {get} /statuses/export Export Statuses
+ * @apiVersion 1.0.0
+ * @apiName ExportStatuses
+ * @apiGroup Status
+ * @apiDescription Export statuses as csv
+ * @apiUse RequestHeaders
+ */
+router.get(
+  PATH_EXPORT,
+  downloadFor({
+    download: (options, done) => {
+      const fileName = `statuses_exports_${Date.now()}.csv`;
+      const readStream = Status.exportCsv(options);
+      return done(null, { fileName, readStream });
+    },
+  })
+);
 
 /**
  * @api {post} /statuses Create New Status
@@ -176,23 +211,12 @@ router.get(PATH_LIST, function getStatuses(request, response, next) {
  * @apiUse AuthorizationHeaderError
  * @apiUse AuthorizationHeaderErrorExample
  */
-router.post(PATH_LIST, function postStatus(request, response, next) {
-  // obtain request body
-  const body = _.merge({}, request.body);
-
-  Status.post(body, function onPostStatus(error, created) {
-    // forward error
-    if (error) {
-      next(error);
-    }
-
-    // handle response
-    else {
-      response.status(201);
-      response.json(created);
-    }
-  });
-});
+router.post(
+  PATH_LIST,
+  postFor({
+    post: (body, done) => Status.post(body, done),
+  })
+);
 
 /**
  * @api {get} /statuses/:id Get Existing Status
@@ -211,26 +235,12 @@ router.post(PATH_LIST, function postStatus(request, response, next) {
  * @apiUse AuthorizationHeaderError
  * @apiUse AuthorizationHeaderErrorExample
  */
-router.get(PATH_SINGLE, function getStatus(request, response, next) {
-  // obtain request options
-  const options = _.merge({}, request.mquery);
-
-  // obtain status id
-  options._id = request.params.id; // eslint-disable-line
-
-  Status.getById(options, function onGetStatus(error, found) {
-    // forward error
-    if (error) {
-      next(error);
-    }
-
-    // handle response
-    else {
-      response.status(200);
-      response.json(found);
-    }
-  });
-});
+router.get(
+  PATH_SINGLE,
+  getByIdFor({
+    getById: (options, done) => Status.getById(options, done),
+  })
+);
 
 /**
  * @api {patch} /statuses/:id Patch Existing Status
@@ -249,26 +259,12 @@ router.get(PATH_SINGLE, function getStatus(request, response, next) {
  * @apiUse AuthorizationHeaderError
  * @apiUse AuthorizationHeaderErrorExample
  */
-router.patch(PATH_SINGLE, function patchStatus(request, response, next) {
-  // obtain status id
-  const { id } = request.params;
-
-  // obtain request body
-  const patches = _.merge({}, request.body);
-
-  Status.patch(id, patches, function onPatchStatus(error, patched) {
-    // forward error
-    if (error) {
-      next(error);
-    }
-
-    // handle response
-    else {
-      response.status(200);
-      response.json(patched);
-    }
-  });
-});
+router.patch(
+  PATH_SINGLE,
+  patchFor({
+    patch: (options, done) => Status.patch(options, done),
+  })
+);
 
 /**
  * @api {put} /statuses/:id Put Existing Status
@@ -287,26 +283,12 @@ router.patch(PATH_SINGLE, function patchStatus(request, response, next) {
  * @apiUse AuthorizationHeaderError
  * @apiUse AuthorizationHeaderErrorExample
  */
-router.put(PATH_SINGLE, function putStatus(request, response, next) {
-  // obtain status id
-  const { id } = request.params;
-
-  // obtain request body
-  const updates = _.merge({}, request.body);
-
-  Status.put(id, updates, function onPutStatus(error, updated) {
-    // forward error
-    if (error) {
-      next(error);
-    }
-
-    // handle response
-    else {
-      response.status(200);
-      response.json(updated);
-    }
-  });
-});
+router.put(
+  PATH_SINGLE,
+  putFor({
+    put: (options, done) => Status.put(options, done),
+  })
+);
 
 /**
  * @api {delete} /statuses/:id Delete Existing Status
@@ -325,23 +307,13 @@ router.put(PATH_SINGLE, function putStatus(request, response, next) {
  * @apiUse AuthorizationHeaderError
  * @apiUse AuthorizationHeaderErrorExample
  */
-router.delete(PATH_SINGLE, function deleteStatus(request, response, next) {
-  // obtain status id
-  const { id } = request.params;
-
-  Status.del(id, function onDeleteStatus(error, deleted) {
-    // forward error
-    if (error) {
-      next(error);
-    }
-
-    // handle response
-    else {
-      response.status(200);
-      response.json(deleted);
-    }
-  });
-});
+router.delete(
+  PATH_SINGLE,
+  deleteFor({
+    del: (options, done) => Status.del(options, done),
+    soft: true,
+  })
+);
 
 /**
  * @api {get} /jurisdictions/:jurisdiction/statuses List Jurisdiction Statuses
@@ -360,25 +332,12 @@ router.delete(PATH_SINGLE, function deleteStatus(request, response, next) {
  * @apiUse AuthorizationHeaderError
  * @apiUse AuthorizationHeaderErrorExample
  */
-router.get(PATH_JURISDICTION, function getStatuses(request, response, next) {
-  // obtain request options
-  const { jurisdiction } = request.params;
-  const filter = jurisdiction ? { filter: { jurisdiction } } : {}; // TODO support parent and no jurisdiction
-  const options = _.merge({}, filter, request.mquery);
-
-  Status.get(options, function onGetStatuses(error, found) {
-    // forward error
-    if (error) {
-      next(error);
-    }
-
-    // handle response
-    else {
-      response.status(200);
-      response.json(found);
-    }
-  });
-});
+router.get(
+  PATH_JURISDICTION,
+  getFor({
+    get: (options, done) => Status.get(options, done),
+  })
+);
 
 /* expose router */
 export default router;
