@@ -124,12 +124,12 @@ describe('Status - Rest API', () => {
       });
   });
 
-  it('should handle GET /priorities/schema', done => {
+  it('should handle GET /statuses/schema', done => {
     const { testGetSchema } = testRouter(options, statusRouter);
     testGetSchema().expect(200, done);
   });
 
-  it('should handle GET /priorities/export', done => {
+  it('should handle GET /statuses/export', done => {
     const { testGetExport } = testRouter(options, statusRouter);
     testGetExport()
       .expect('Content-Type', 'text/csv; charset=utf-8')
