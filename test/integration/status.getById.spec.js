@@ -1,19 +1,16 @@
 import _ from 'lodash';
 import { Jurisdiction } from '@codetanzania/majifix-jurisdiction';
 import { clear, create, expect } from '@lykmapipo/mongoose-test-helpers';
-import { Status } from '../../src';
+import { Status } from '../../src/index';
 
 describe('Status', () => {
-  let jurisdiction;
+  const jurisdiction = Jurisdiction.fake();
 
   before(done => {
     clear(Status, Jurisdiction, done);
   });
 
-  before(done => {
-    jurisdiction = Jurisdiction.fake();
-    create(jurisdiction, done);
-  });
+  before(done => create(jurisdiction, done));
 
   describe('get by id', () => {
     let status;
