@@ -246,6 +246,9 @@ StatusSchema.pre('validate', function preValidate(next) {
  * @instance
  */
 StatusSchema.methods.preValidate = function preValidate(done) {
+  // ensure name for all locales
+  this.name = localizedValuesFor(this.name);
+
   // set default color if not set
   if (_.isEmpty(this.color)) {
     this.color = randomColor();
