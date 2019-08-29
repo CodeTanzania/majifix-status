@@ -1,9 +1,15 @@
 # majifix-status
 
 [![Build Status](https://travis-ci.org/CodeTanzania/majifix-status.svg?branch=develop)](https://travis-ci.org/CodeTanzania/majifix-status)
-[![Dependencies Status](https://david-dm.org/CodeTanzania/majifix-status/status.svg?style=flat-square)](https://david-dm.org/CodeTanzania/majifix-status)
-[![Renovate enabled](https://img.shields.io/badge/renovate-enabled-brightgreen.svg)](https://renovatebot.com/)
+[![Dependencies Status](https://david-dm.org/CodeTanzania/majifix-status.svg)](https://david-dm.org/CodeTanzania/majifix-status)
+[![Coverage Status](https://coveralls.io/repos/github/CodeTanzania/majifix-status/badge.svg?branch=develop)](https://coveralls.io/github/CodeTanzania/majifix-status?branch=develop)
+[![GitHub License](https://img.shields.io/github/license/CodeTanzania/majifix-status)](https://github.com/CodeTanzania/majifix-status/blob/develop/LICENSE)
 [![Deploy to Heroku](https://www.herokucdn.com/deploy/button.png)](https://heroku.com/deploy?template=https://github.com/CodeTanzania/majifix-status/tree/develop)
+
+[![Commitizen Friendly](https://img.shields.io/badge/commitizen-friendly-brightgreen.svg)](http://commitizen.github.io/cz-cli/)
+[![code style: prettier](https://img.shields.io/badge/code_style-prettier-ff69b4.svg)](https://github.com/prettier/prettier)
+[![Code Style](https://badgen.net/badge/code%20style/airbnb/ff5a5f?icon=airbnb)](https://github.com/airbnb/javascript)
+[![npm version](https://img.shields.io/npm/v/@codetanzania/majifix-status)](https://www.npmjs.com/package/@codetanzania/majifix-status)
 
 A representation of an entity which provides a way to set flags on service requests(issues) in order to track their progress.
 
