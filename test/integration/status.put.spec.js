@@ -4,16 +4,11 @@ import { clear, create, expect } from '@lykmapipo/mongoose-test-helpers';
 import { Status } from '../../src';
 
 describe('Status', () => {
-  let jurisdiction;
+  const jurisdiction = Jurisdiction.fake();
 
-  before(done => {
-    clear(Status, Jurisdiction, done);
-  });
+  before(done => clear(Status, Jurisdiction, done));
 
-  before(done => {
-    jurisdiction = Jurisdiction.fake();
-    create(jurisdiction, done);
-  });
+  before(done => create(jurisdiction, done));
 
   describe('static put', () => {
     let status;
@@ -84,7 +79,5 @@ describe('Status', () => {
     });
   });
 
-  after(done => {
-    clear(Status, Jurisdiction, done);
-  });
+  after(done => clear(Status, Jurisdiction, done));
 });

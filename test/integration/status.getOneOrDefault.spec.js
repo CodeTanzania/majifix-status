@@ -1,5 +1,5 @@
 import { expect, clear } from '@lykmapipo/mongoose-test-helpers';
-import { Status } from '../../src/index';
+import { Status } from '../../src';
 
 describe('Status getOneOrDefault', () => {
   before(done => clear(done));

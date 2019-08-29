@@ -106,32 +106,6 @@
  *   "lastModified": "2018-05-06T10:19:04.910Z"
  * }
  */
-import { getString } from '@lykmapipo/env';
-import {
-  getFor,
-  schemaFor,
-  downloadFor,
-  getByIdFor,
-  postFor,
-  patchFor,
-  putFor,
-  deleteFor,
-  Router,
-} from '@lykmapipo/express-rest-actions';
-import Status from './status.model';
-
-/* constants */
-const API_VERSION = getString('API_VERSION', '1.0.0');
-const PATH_SINGLE = '/statuses/:id';
-const PATH_LIST = '/statuses';
-const PATH_EXPORT = '/statuses/export';
-const PATH_SCHEMA = '/statuses/schema/';
-const PATH_JURISDICTION = '/jurisdictions/:jurisdiction/statuses';
-
-/* declarations */
-const router = new Router({
-  version: API_VERSION,
-});
 
 /**
  * @api {get} /statuses List Statuses
@@ -150,12 +124,6 @@ const router = new Router({
  * @apiUse AuthorizationHeaderError
  * @apiUse AuthorizationHeaderErrorExample
  */
-router.get(
-  PATH_LIST,
-  getFor({
-    get: (options, done) => Status.get(options, done),
-  })
-);
 
 /**
  * @api {get} /statuses/schema Get Status Schema
@@ -165,15 +133,6 @@ router.get(
  * @apiDescription Returns status json schema definition
  * @apiUse RequestHeaders
  */
-router.get(
-  PATH_SCHEMA,
-  schemaFor({
-    getSchema: (query, done) => {
-      const jsonSchema = Status.jsonSchema();
-      return done(null, jsonSchema);
-    },
-  })
-);
 
 /**
  * @api {get} /statuses/export Export Statuses
@@ -183,16 +142,6 @@ router.get(
  * @apiDescription Export statuses as csv
  * @apiUse RequestHeaders
  */
-router.get(
-  PATH_EXPORT,
-  downloadFor({
-    download: (options, done) => {
-      const fileName = `statuses_exports_${Date.now()}.csv`;
-      const readStream = Status.exportCsv(options);
-      return done(null, { fileName, readStream });
-    },
-  })
-);
 
 /**
  * @api {post} /statuses Create New Status
@@ -211,12 +160,6 @@ router.get(
  * @apiUse AuthorizationHeaderError
  * @apiUse AuthorizationHeaderErrorExample
  */
-router.post(
-  PATH_LIST,
-  postFor({
-    post: (body, done) => Status.post(body, done),
-  })
-);
 
 /**
  * @api {get} /statuses/:id Get Existing Status
@@ -235,12 +178,6 @@ router.post(
  * @apiUse AuthorizationHeaderError
  * @apiUse AuthorizationHeaderErrorExample
  */
-router.get(
-  PATH_SINGLE,
-  getByIdFor({
-    getById: (options, done) => Status.getById(options, done),
-  })
-);
 
 /**
  * @api {patch} /statuses/:id Patch Existing Status
@@ -259,12 +196,6 @@ router.get(
  * @apiUse AuthorizationHeaderError
  * @apiUse AuthorizationHeaderErrorExample
  */
-router.patch(
-  PATH_SINGLE,
-  patchFor({
-    patch: (options, done) => Status.patch(options, done),
-  })
-);
 
 /**
  * @api {put} /statuses/:id Put Existing Status
@@ -283,12 +214,6 @@ router.patch(
  * @apiUse AuthorizationHeaderError
  * @apiUse AuthorizationHeaderErrorExample
  */
-router.put(
-  PATH_SINGLE,
-  putFor({
-    put: (options, done) => Status.put(options, done),
-  })
-);
 
 /**
  * @api {delete} /statuses/:id Delete Existing Status
@@ -307,13 +232,6 @@ router.put(
  * @apiUse AuthorizationHeaderError
  * @apiUse AuthorizationHeaderErrorExample
  */
-router.delete(
-  PATH_SINGLE,
-  deleteFor({
-    del: (options, done) => Status.del(options, done),
-    soft: true,
-  })
-);
 
 /**
  * @api {get} /jurisdictions/:jurisdiction/statuses List Jurisdiction Statuses
@@ -332,12 +250,3 @@ router.delete(
  * @apiUse AuthorizationHeaderError
  * @apiUse AuthorizationHeaderErrorExample
  */
-router.get(
-  PATH_JURISDICTION,
-  getFor({
-    get: (options, done) => Status.get(options, done),
-  })
-);
-
-/* expose router */
-export default router;

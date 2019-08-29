@@ -11,22 +11,28 @@
  * @license MIT
  * @example
  *
- * const { app } = require('@codetanzania/majifix-status');
- *
- * ...
- *
- * app.start();
+ * const { Status, start } = require('@codetanzania/majifix-status');
+ * start(error => { ... });
  *
  */
 
-/* dependencies */
 import { pkg } from '@lykmapipo/common';
+import { apiVersion as httpApiVersion } from '@lykmapipo/env';
+import { start } from '@lykmapipo/express-rest-actions';
 import Status from './status.model';
-import router from './http.router';
+import statusRouter from './status.http.router';
 
-/* declarations */
-/* extract information from package.json */
-const info = pkg(
+/**
+ * @name info
+ * @description package information
+ * @type {object}
+ *
+ * @author lally elias <lallyelias87@gmail.com>
+ * @author rijkerd <richardaggrey7@gmail.com>
+ * @since 1.0.0
+ * @version 0.1.0
+ */
+export const info = pkg(
   `${__dirname}/package.json`,
   'name',
   'description',
@@ -39,7 +45,38 @@ const info = pkg(
   'contributors'
 );
 
-/* extract api version from router version */
-const apiVersion = router.version;
+/**
+ * @name Status
+ * @description Status model
+ *
+ * @author lally elias <lallyelias87@gmail.com>
+ * @author rijkerd <richardaggrey7@gmail.com>
+ * @since 0.1.0
+ * @version 0.1.0
+ */
+export { Status };
 
-export { apiVersion, info, Status, router };
+/**
+ * @name statusRouter
+ * @description status http router
+ *
+ * @author lally elias <lallyelias87@gmail.com>
+ * @author rijkerd <richardaggrey7@gmail.com>
+ * @since 0.1.0
+ * @version 0.1.0
+ */
+export { statusRouter };
+
+/**
+ * @name apiVersion
+ * @description http router api version
+ * @type {string}
+ *
+ * @author lally elias <lallyelias87@gmail.com>
+ * @author rijkerd <richardaggrey7@gmail.com>
+ * @since 0.1.0
+ * @version 0.1.0
+ */
+export const apiVersion = httpApiVersion();
+
+export { start };

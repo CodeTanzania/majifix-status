@@ -1,37 +1,27 @@
 import _ from 'lodash';
-import async from 'async';
 import { Jurisdiction } from '@codetanzania/majifix-jurisdiction';
 import { clear, create, expect } from '@lykmapipo/mongoose-test-helpers';
 import { Status } from '../../src';
 
 describe('Status', () => {
-  let jurisdiction;
+  const jurisdiction = Jurisdiction.fake();
 
   before(done => {
     clear(Status, Jurisdiction, done);
   });
 
   before(done => {
-    jurisdiction = Jurisdiction.fake();
     create(jurisdiction, done);
   });
 
   describe('get', () => {
-    let statuses;
-
-    before(done => {
-      const fakes = _.map(Status.fake(32), fake => {
-        const status = fake;
-        return next => {
-          status.jurisdiction = jurisdiction;
-          status.post(next);
-        };
-      });
-      async.parallel(fakes, (error, created) => {
-        statuses = created;
-        done(error, created);
-      });
+    let statuses = Status.fake(32);
+    statuses = _.map(statuses, status => {
+      status.set({ jurisdiction });
+      return status;
     });
+
+    before(done => create(...statuses, done));
 
     it('should be able to get without options', done => {
       Status.get((error, results) => {

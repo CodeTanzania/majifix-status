@@ -1,3 +1,72 @@
+#### 1.6.0 (2019-08-29)
+
+##### Chores
+
+- **deps:**
+  - remove unused ([e2934b4f](https://github.com/CodeTanzania/majifix-status/commit/e2934b4fb0645ec83869a602af0b861b7f599596))
+  - force latest version & audit fix ([90ca36a1](https://github.com/CodeTanzania/majifix-status/commit/90ca36a1d9ac28bb4fc86d14f36e5509fd3d4913))
+  - force latest version & audit fix ([2e007ae7](https://github.com/CodeTanzania/majifix-status/commit/2e007ae7a493876a3d1b6dd14de4d9c5af43e9aa))
+  - update dependency rollup to v1.20.3 ([34a3fc34](https://github.com/CodeTanzania/majifix-status/commit/34a3fc3497fc8de6f61e01520f78012f9f5e680a))
+  - add express-test-helpers ([7d8a89fd](https://github.com/CodeTanzania/majifix-status/commit/7d8a89fd02a4aa7b8d4704dc714ffe3e436357cd))
+  - update dependency lint-staged to v9.2.5 ([de854894](https://github.com/CodeTanzania/majifix-status/commit/de854894d4750c35bf8da0079d7adebabb24fcd5))
+  - update dependency mongoose to v5.6.11 ([04570c05](https://github.com/CodeTanzania/majifix-status/commit/04570c05c731b16fb14a6fdc9bde868ae627ee7f))
+  - update dependency lint-staged to v9.2.4 ([904daba3](https://github.com/CodeTanzania/majifix-status/commit/904daba30212dc36c61bcbc440b0840793cac8c3))
+  - update dependency rollup to v1.20.2 ([5246a5ba](https://github.com/CodeTanzania/majifix-status/commit/5246a5ba4c7d49299ef013f9cb4e244e5adc9626))
+  - update dependency eslint to v6.2.2 ([26c29c22](https://github.com/CodeTanzania/majifix-status/commit/26c29c229a49ffc4caa9b22b35c6ff26567e83c3))
+  - update dependency rollup to v1.20.1 ([5f95401f](https://github.com/CodeTanzania/majifix-status/commit/5f95401f9e7cb78d79dad14d0c4e646a5a6d1395))
+  - update dependency eslint-plugin-mocha to v6.1.0 ([641975bd](https://github.com/CodeTanzania/majifix-status/commit/641975bd4999f0743b7968e95b44779cded8b0b2))
+  - update dependency rollup to v1.20.0 ([578a1c19](https://github.com/CodeTanzania/majifix-status/commit/578a1c19d5df4d0ed75361eb3e14626bee3414f3))
+  - update dependency mongoose to v5.6.10 ([f2d1aa56](https://github.com/CodeTanzania/majifix-status/commit/f2d1aa5642a886e75ba2864f86f7bb525d025bf0))
+  - update dependency eslint to v6.2.1 ([ffbb7bac](https://github.com/CodeTanzania/majifix-status/commit/ffbb7bac1d45a7b1399e277e895db3cf5713b6c1))
+- **examples:** improve sample app & seed ([b3055332](https://github.com/CodeTanzania/majifix-status/commit/b30553329f9ba779f0485304b47e57a937fdb449))
+- **lint:** ignore apidoc ([2643646d](https://github.com/CodeTanzania/majifix-status/commit/2643646d2d5b10755bb4ea9b01bac09d4cb86b3b))
+- **configs:**
+  - update eslint configs ([c4232330](https://github.com/CodeTanzania/majifix-status/commit/c4232330d61ce7482ef9ac1c62538600832c6784))
+  - update prettier configs ([530472ef](https://github.com/CodeTanzania/majifix-status/commit/530472ef5ff1611f179ea5d38b198becf4418e5d))
+  - update npm files ([5e6dff2f](https://github.com/CodeTanzania/majifix-status/commit/5e6dff2f6c4d6acf65e1c04386ee09f7b397de9b))
+  - update git files ([bfe1f0ea](https://github.com/CodeTanzania/majifix-status/commit/bfe1f0ea731e2a0cb8108b94bce8effbea8cf388))
+  - update editor configs ([a1fb9244](https://github.com/CodeTanzania/majifix-status/commit/a1fb92442b86ed867d6f57d70a4128e06dac5334))
+  - update babel configs ([e575b353](https://github.com/CodeTanzania/majifix-status/commit/e575b353713e290b7b263360b08ec38be3f13cca))
+- **ci:** update travis configs ([dec3b175](https://github.com/CodeTanzania/majifix-status/commit/dec3b175dd05aa40b92ef0be4c11a4f4c062d22c))
+- remove unused apidocs ([a1ecff01](https://github.com/CodeTanzania/majifix-status/commit/a1ecff01d6fd378f1a7af4aa04f5ee1fe9a324f3))
+
+##### Documentation Changes
+
+- update usage docs ([e6d93f52](https://github.com/CodeTanzania/majifix-status/commit/e6d93f529f0b4767a02f4bb045985c2e55caf135))
+- update requirements version ([c7764e44](https://github.com/CodeTanzania/majifix-status/commit/c7764e448b9ea0ec607400f1293c9d7108872687))
+- update status badges ([9518aeb0](https://github.com/CodeTanzania/majifix-status/commit/9518aeb0a3ff22c819f9635ed16baeaba05a2f72))
+- update contributor guide and code of conduct ([51997a9b](https://github.com/CodeTanzania/majifix-status/commit/51997a9b0d21a786465c59e48de4e7f5f23f3541))
+- **changelog:** generate latest release notes ([4ad28c85](https://github.com/CodeTanzania/majifix-status/commit/4ad28c85a703587f9a701ed330f039fd93a67dfb))
+
+##### Bug Fixes
+
+- **model:** ensure name for all locales ([a6915ded](https://github.com/CodeTanzania/majifix-status/commit/a6915dedafee00cf56f0a4881d525d6088d8abae))
+
+##### Refactors
+
+- **test:** improve local imports ([dd7d41a1](https://github.com/CodeTanzania/majifix-status/commit/dd7d41a1257c429c464a3e544877be476f78dafb))
+- improve package script & main export style ([eb6680b0](https://github.com/CodeTanzania/majifix-status/commit/eb6680b0c9c4a10601b07b4ccad25f29ef047426))
+- **router:**
+  - extract apidoc & use jsdocs ([d4913ff4](https://github.com/CodeTanzania/majifix-status/commit/d4913ff4b2f88fbb7cacb459689989c6fb5cd6e0))
+  - rename http router ([fb93840f](https://github.com/CodeTanzania/majifix-status/commit/fb93840fad0f4b630b50b820ee16000ced82d281))
+- **src:** re-structure ([cd4fea5b](https://github.com/CodeTanzania/majifix-status/commit/cd4fea5bd7a9c1e1b04915d1b615f2e793d422d2))
+
+##### Code Style Changes
+
+- fix jsdoc warnings ([496a6acc](https://github.com/CodeTanzania/majifix-status/commit/496a6accea97226aed3de030d8e306c82e6b902b))
+- **lint:** run lint fix style ([b724f962](https://github.com/CodeTanzania/majifix-status/commit/b724f96256e64c0a18d4cd0a1b75aae7970bff64))
+
+##### Tests
+
+- **integration:**
+  - improve test ([91bc0279](https://github.com/CodeTanzania/majifix-status/commit/91bc0279687b04eeab1a3b2d9db22fedb5f164c7))
+  - rename file and missing tests ([e3ee12aa](https://github.com/CodeTanzania/majifix-status/commit/e3ee12aa7f29ecdc9f95b8fc13feb70d90b1b157))
+- **unit:**
+  - improve tests and structure ([ab0b1956](https://github.com/CodeTanzania/majifix-status/commit/ab0b19565638d05f2ad7bad013ba5fdde7cc83cd))
+  - refactor and add expose autopopulate test ([34abb055](https://github.com/CodeTanzania/majifix-status/commit/34abb055a11783969e4846b1302cd6ac626e5b2c))
+
+#### 1.5.1 (2019-08-20)
+
 #### 1.5.0 (2019-08-19)
 
 ##### Chores
