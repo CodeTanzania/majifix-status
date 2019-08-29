@@ -1,7 +1,7 @@
 import path from 'path';
 import _ from 'lodash';
 import { clear, expect } from '@lykmapipo/mongoose-test-helpers';
-import { Status } from '../../src/index';
+import { Status } from '../../src';
 
 describe('Status Seed', () => {
   const { SEEDS_PATH } = process.env;

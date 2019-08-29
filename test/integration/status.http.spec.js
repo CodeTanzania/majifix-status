@@ -3,7 +3,7 @@ import {
   testRouter,
 } from '@lykmapipo/express-test-helpers';
 import { clear as clearDb, expect } from '@lykmapipo/mongoose-test-helpers';
-import { Status, statusRouter } from '../../src/index';
+import { Status, statusRouter } from '../../src';
 
 describe('Status - Rest API', () => {
   const status = Status.fake();

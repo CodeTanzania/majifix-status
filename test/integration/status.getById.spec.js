@@ -1,7 +1,7 @@
 import _ from 'lodash';
 import { Jurisdiction } from '@codetanzania/majifix-jurisdiction';
 import { clear, create, expect } from '@lykmapipo/mongoose-test-helpers';
-import { Status } from '../../src/index';
+import { Status } from '../../src';
 
 describe('Status', () => {
   const jurisdiction = Jurisdiction.fake();

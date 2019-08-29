@@ -1,6 +1,6 @@
 import { Jurisdiction } from '@codetanzania/majifix-jurisdiction';
 import { clear, expect, create } from '@lykmapipo/mongoose-test-helpers';
-import { Status } from '../../src/index';
+import { Status } from '../../src';
 
 describe('Status static delete', () => {
   const jurisdiction = Jurisdiction.fake();
