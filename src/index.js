@@ -28,7 +28,7 @@ import statusRouter from './status.http.router';
 /**
  * @name info
  * @description package information
- * @type {Object}
+ * @type {object}
  *
  * @author lally elias <lallyelias87@gmail.com>
  * @author Richard Aggrey <richardaggrey7@gmail.com>
@@ -78,7 +78,7 @@ export { statusRouter };
 /**
  * @name apiVersion
  * @description http router api version
- * @type {String}
+ * @type {string}
  *
  * @author lally elias <lallyelias87@gmail.com>
  * @author Richard Aggrey <richardaggrey7@gmail.com>

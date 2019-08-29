@@ -227,7 +227,7 @@ StatusSchema.index(INDEX_UNIQUE, { unique: true });
 /**
  * @name validate
  * @description status schema pre validation hook
- * @param {function} done callback to invoke on success or error
+ * @param {Function} done callback to invoke on success or error
  * @since 0.1.0
  * @version 1.0.0
  * @private
@@ -245,7 +245,7 @@ StatusSchema.pre('validate', function preValidate(next) {
 /**
  * @name preValidate
  * @description status schema pre validation hook logic
- * @param {function} done callback to invoke on success or error
+ * @param {Function} done callback to invoke on success or error
  * @since 0.1.0
  * @version 1.0.0
  * @instance
@@ -264,7 +264,7 @@ StatusSchema.methods.preValidate = function preValidate(done) {
  * @name beforeDelete
  * @function beforeDelete
  * @description pre delete status logics
- * @param  {function} done callback to invoke on success or error
+ * @param  {Function} done callback to invoke on success or error
  *
  * @since 0.1.0
  * @version 1.0.0
@@ -298,8 +298,8 @@ StatusSchema.statics.OPTION_AUTOPOPULATE = OPTION_AUTOPOPULATE;
  * @name findDefault
  * @function findDefault
  * @description find default status
- * @param {function} done a callback to invoke on success or failure
- * @return {Status} default status
+ * @param {Function} done a callback to invoke on success or failure
+ * @returns {Status} default status
  * @since 0.1.0
  * @version 1.0.0
  * @static
@@ -316,8 +316,8 @@ StatusSchema.statics.findDefault = done => {
  * @name prepareSeedCriteria
  * @function prepareSeedCriteria
  * @description define seed data criteria
- * @param {Object} seed status to be seeded
- * @returns {Object} packed criteria for seeding
+ * @param {object} seed status to be seeded
+ * @returns {object} packed criteria for seeding
  *
  * @author lally elias <lallyelias87@gmail.com>
  * @since 1.5.0
@@ -341,9 +341,9 @@ StatusSchema.statics.prepareSeedCriteria = seed => {
  * @name getOneOrDefault
  * @function getOneOrDefault
  * @description Find existing status or default based on given criteria
- * @param {Object} criteria valid query criteria
+ * @param {object} criteria valid query criteria
  * @param {Function} done callback to invoke on success or error
- * @returns {Object|Error} found status or error
+ * @returns {object|Error} found status or error
  *
  * @author lally elias <lallyelias87@gmail.com>
  * @since 1.5.0
