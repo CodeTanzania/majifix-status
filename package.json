@@ -31,8 +31,12 @@
     "codetanzania",
     "majifix",
     "majifix-module",
+    "open311",
     "status",
-    "open311"
+    "pipeline",
+    "flag",
+    "state",
+    "label"
   ],
   "contributors": [
     {
