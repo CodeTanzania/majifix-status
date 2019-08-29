@@ -1,20 +1,3 @@
-/**
- * @module Status
- * @name Status
- * @description A representation of an entity which provides a way
- * to set flags on service requests(issues) in order to track
- * their progress.
- *
- * @requires https://github.com/CodeTanzania/majifix-jurisdiction
- * @see {@link https://github.com/CodeTanzania/majifix-jurisdiction}
- *
- * @author lally elias <lallyelias87@gmail.com>
- * @author Benson Maruchu <benmaruchu@gmail.com>
- * @license MIT
- * @since 0.1.0
- * @version 1.0.0
- * @public
- */
 import _ from 'lodash';
 import { idOf, randomColor, compact, mergeObjects } from '@lykmapipo/common';
 import { createSchema, model, ObjectId } from '@lykmapipo/mongoose-common';
@@ -47,11 +30,21 @@ const SCHEMA_OPTIONS = { collection: COLLECTION_NAME_STATUS };
 const INDEX_UNIQUE = { jurisdiction: 1, ...localizedIndexesFor('name') };
 
 /**
- * @name StatusSchema
- * @type {Schema}
+ * @module Status
+ * @name Status
+ * @description A representation of an entity which provides a way
+ * to set flags on service requests(issues) in order to track
+ * their progress.
+ *
+ * @requires https://github.com/CodeTanzania/majifix-jurisdiction
+ * @see {@link https://github.com/CodeTanzania/majifix-jurisdiction}
+ *
+ * @author lally elias <lallyelias87@gmail.com>
+ * @author Benson Maruchu <benmaruchu@gmail.com>
+ * @license MIT
  * @since 0.1.0
  * @version 1.0.0
- * @private
+ * @public
  */
 const StatusSchema = createSchema(
   {
@@ -228,6 +221,7 @@ StatusSchema.index(INDEX_UNIQUE, { unique: true });
  * @name validate
  * @description status schema pre validation hook
  * @param {Function} done callback to invoke on success or error
+ * @returns {object|Error} valid instance or error
  * @since 0.1.0
  * @version 1.0.0
  * @private
@@ -246,6 +240,7 @@ StatusSchema.pre('validate', function preValidate(next) {
  * @name preValidate
  * @description status schema pre validation hook logic
  * @param {Function} done callback to invoke on success or error
+ * @returns {object|Error} valid instance or error
  * @since 0.1.0
  * @version 1.0.0
  * @instance
@@ -257,15 +252,15 @@ StatusSchema.methods.preValidate = function preValidate(done) {
   }
 
   // continue
-  return done();
+  return done(null, this);
 };
 
 /**
  * @name beforeDelete
  * @function beforeDelete
  * @description pre delete status logics
- * @param  {Function} done callback to invoke on success or error
- *
+ * @param {Function} done callback to invoke on success or error
+ * @returns {object|Error} valid instance or error
  * @since 0.1.0
  * @version 1.0.0
  * @instance
