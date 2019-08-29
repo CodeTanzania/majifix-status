@@ -1,6 +1,6 @@
 {
   "name": "@codetanzania/majifix-status",
-  "version": "1.5.1",
+  "version": "1.6.0",
   "description": "A representation of an entity which provides a way to set flags on service requests(issues) in order to track their progress.",
   "main": "lib/index.js",
   "module": "es/index.js",

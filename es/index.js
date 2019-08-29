@@ -5,13 +5,25 @@ import {
   compact,
   pkg,
 } from '@lykmapipo/common';
+import { getString, apiVersion as apiVersion$1 } from '@lykmapipo/env';
+import {
+  Router,
+  getFor,
+  schemaFor,
+  downloadFor,
+  postFor,
+  getByIdFor,
+  patchFor,
+  putFor,
+  deleteFor,
+} from '@lykmapipo/express-rest-actions';
 import _ from 'lodash';
 import { model, createSchema, ObjectId } from '@lykmapipo/mongoose-common';
 import {
   localizedIndexesFor,
   localize,
-  localizedKeysFor,
   localizedValuesFor,
+  localizedKeysFor,
 } from 'mongoose-locale-schema';
 import actions from 'mongoose-rest-actions';
 import exportable from '@lykmapipo/mongoose-exportable';
@@ -25,18 +37,17 @@ import {
   MODEL_NAME_SERVICEREQUEST,
   PATH_NAME_STATUS,
 } from '@codetanzania/majifix-common';
-import { getString } from '@lykmapipo/env';
-import {
-  Router,
-  getFor,
-  schemaFor,
-  downloadFor,
-  postFor,
-  getByIdFor,
-  patchFor,
-  putFor,
-  deleteFor,
-} from '@lykmapipo/express-rest-actions';
+
+export { start } from '@lykmapipo/express-rest-actions';
+
+/* constants */
+const OPTION_SELECT = { name: 1, color: 1 };
+const OPTION_AUTOPOPULATE = {
+  select: OPTION_SELECT,
+  maxDepth: POPULATION_MAX_DEPTH,
+};
+const SCHEMA_OPTIONS = { collection: COLLECTION_NAME_STATUS };
+const INDEX_UNIQUE = { jurisdiction: 1, ...localizedIndexesFor('name') };
 
 /**
  * @module Status
@@ -54,23 +65,6 @@ import {
  * @since 0.1.0
  * @version 1.0.0
  * @public
- */
-
-/* constants */
-const OPTION_SELECT = { name: 1, color: 1 };
-const OPTION_AUTOPOPULATE = {
-  select: OPTION_SELECT,
-  maxDepth: POPULATION_MAX_DEPTH,
-};
-const SCHEMA_OPTIONS = { collection: COLLECTION_NAME_STATUS };
-const INDEX_UNIQUE = { jurisdiction: 1, ...localizedIndexesFor('name') };
-
-/**
- * @name StatusSchema
- * @type {Schema}
- * @since 0.1.0
- * @version 1.0.0
- * @private
  */
 const StatusSchema = createSchema(
   {
@@ -246,7 +240,8 @@ StatusSchema.index(INDEX_UNIQUE, { unique: true });
 /**
  * @name validate
  * @description status schema pre validation hook
- * @param {function} done callback to invoke on success or error
+ * @param {Function} done callback to invoke on success or error
+ * @returns {object|Error} valid instance or error
  * @since 0.1.0
  * @version 1.0.0
  * @private
@@ -264,27 +259,31 @@ StatusSchema.pre('validate', function preValidate(next) {
 /**
  * @name preValidate
  * @description status schema pre validation hook logic
- * @param {function} done callback to invoke on success or error
+ * @param {Function} done callback to invoke on success or error
+ * @returns {object|Error} valid instance or error
  * @since 0.1.0
  * @version 1.0.0
  * @instance
  */
 StatusSchema.methods.preValidate = function preValidate(done) {
+  // ensure name for all locales
+  this.name = localizedValuesFor(this.name);
+
   // set default color if not set
   if (_.isEmpty(this.color)) {
     this.color = randomColor();
   }
 
   // continue
-  return done();
+  return done(null, this);
 };
 
 /**
  * @name beforeDelete
  * @function beforeDelete
  * @description pre delete status logics
- * @param  {function} done callback to invoke on success or error
- *
+ * @param {Function} done callback to invoke on success or error
+ * @returns {object|Error} valid instance or error
  * @since 0.1.0
  * @version 1.0.0
  * @instance
@@ -317,8 +316,8 @@ StatusSchema.statics.OPTION_AUTOPOPULATE = OPTION_AUTOPOPULATE;
  * @name findDefault
  * @function findDefault
  * @description find default status
- * @param {function} done a callback to invoke on success or failure
- * @return {Status} default status
+ * @param {Function} done a callback to invoke on success or failure
+ * @returns {Status} default status
  * @since 0.1.0
  * @version 1.0.0
  * @static
@@ -335,8 +334,8 @@ StatusSchema.statics.findDefault = done => {
  * @name prepareSeedCriteria
  * @function prepareSeedCriteria
  * @description define seed data criteria
- * @param {Object} seed status to be seeded
- * @returns {Object} packed criteria for seeding
+ * @param {object} seed status to be seeded
+ * @returns {object} packed criteria for seeding
  *
  * @author lally elias <lallyelias87@gmail.com>
  * @since 1.5.0
@@ -360,9 +359,9 @@ StatusSchema.statics.prepareSeedCriteria = seed => {
  * @name getOneOrDefault
  * @function getOneOrDefault
  * @description Find existing status or default based on given criteria
- * @param {Object} criteria valid query criteria
+ * @param {object} criteria valid query criteria
  * @param {Function} done callback to invoke on success or error
- * @returns {Object|Error} found status or error
+ * @returns {object|Error} found status or error
  *
  * @author lally elias <lallyelias87@gmail.com>
  * @since 1.5.0
@@ -403,10 +402,19 @@ StatusSchema.statics.getOneOrDefault = (criteria, done) => {
 /* export status model */
 const Status = model(MODEL_NAME_STATUS, StatusSchema);
 
+/* constants */
+const API_VERSION = getString('API_VERSION', '1.0.0');
+const PATH_SINGLE = '/statuses/:id';
+const PATH_LIST = '/statuses';
+const PATH_EXPORT = '/statuses/export';
+const PATH_SCHEMA = '/statuses/schema/';
+const PATH_JURISDICTION = '/jurisdictions/:jurisdiction/statuses';
+
 /**
- * @apiDefine Status  Status
+ * @name StatusHttpRouter
+ * @namespace StatusHttpRouter
  *
- * @apiDescription A representation of an entity which provides a way
+ * @description A representation of an entity which provides a way
  * to set flags on service requests(issues) in order to track
  * their progress.
  *
@@ -417,36 +425,14 @@ const Status = model(MODEL_NAME_STATUS, StatusSchema);
  * @version 1.0.0
  * @public
  */
-
-/* constants */
-const API_VERSION = getString('API_VERSION', '1.0.0');
-const PATH_SINGLE = '/statuses/:id';
-const PATH_LIST = '/statuses';
-const PATH_EXPORT = '/statuses/export';
-const PATH_SCHEMA = '/statuses/schema/';
-const PATH_JURISDICTION = '/jurisdictions/:jurisdiction/statuses';
-
-/* declarations */
 const router = new Router({
   version: API_VERSION,
 });
 
 /**
- * @api {get} /statuses List Statuses
- * @apiVersion 1.0.0
- * @apiName GetStatuses
- * @apiGroup Status
- * @apiDescription Returns a list of statuses
- * @apiUse RequestHeaders
- * @apiUse Statuses
- *
- *
- * @apiUse RequestHeadersExample
- * @apiUse StatusesSuccessResponse
- * @apiUse JWTError
- * @apiUse JWTErrorExample
- * @apiUse AuthorizationHeaderError
- * @apiUse AuthorizationHeaderErrorExample
+ * @name GetStatuses
+ * @memberof StatusHttpRouter
+ * @description Returns a list of statuses
  */
 router.get(
   PATH_LIST,
@@ -456,12 +442,9 @@ router.get(
 );
 
 /**
- * @api {get} /statuses/schema Get Status Schema
- * @apiVersion 1.0.0
- * @apiName GetStatusSchema
- * @apiGroup Status
- * @apiDescription Returns status json schema definition
- * @apiUse RequestHeaders
+ * @name GetStatusSchema
+ * @memberof StatusHttpRouter
+ * @description Returns status json schema definition
  */
 router.get(
   PATH_SCHEMA,
@@ -474,12 +457,9 @@ router.get(
 );
 
 /**
- * @api {get} /statuses/export Export Statuses
- * @apiVersion 1.0.0
- * @apiName ExportStatuses
- * @apiGroup Status
- * @apiDescription Export statuses as csv
- * @apiUse RequestHeaders
+ * @name ExportStatuses
+ * @memberof StatusHttpRouter
+ * @description Export statuses as csv
  */
 router.get(
   PATH_EXPORT,
@@ -493,21 +473,9 @@ router.get(
 );
 
 /**
- * @api {post} /statuses Create New Status
- * @apiVersion 1.0.0
- * @apiName PostStatus
- * @apiGroup Status
- * @apiDescription Create new status
- * @apiUse RequestHeaders
- * @apiUse Status
- *
- *
- * @apiUse RequestHeadersExample
- * @apiUse StatusSuccessResponse
- * @apiUse JWTError
- * @apiUse JWTErrorExample
- * @apiUse AuthorizationHeaderError
- * @apiUse AuthorizationHeaderErrorExample
+ * @name PostStatus
+ * @memberof StatusHttpRouter
+ * @description Create new status
  */
 router.post(
   PATH_LIST,
@@ -517,21 +485,9 @@ router.post(
 );
 
 /**
- * @api {get} /statuses/:id Get Existing Status
- * @apiVersion 1.0.0
- * @apiName GetStatus
- * @apiGroup Status
- * @apiDescription Get existing status
- * @apiUse RequestHeaders
- * @apiUse Status
- *
- *
- * @apiUse RequestHeadersExample
- * @apiUse StatusSuccessResponse
- * @apiUse JWTError
- * @apiUse JWTErrorExample
- * @apiUse AuthorizationHeaderError
- * @apiUse AuthorizationHeaderErrorExample
+ * @name GetStatus
+ * @memberof StatusHttpRouter
+ * @description Get existing status
  */
 router.get(
   PATH_SINGLE,
@@ -541,21 +497,9 @@ router.get(
 );
 
 /**
- * @api {patch} /statuses/:id Patch Existing Status
- * @apiVersion 1.0.0
- * @apiName PatchStatus
- * @apiGroup Status
- * @apiDescription Patch existing status
- * @apiUse RequestHeaders
- * @apiUse Status
- *
- *
- * @apiUse RequestHeadersExample
- * @apiUse StatusSuccessResponse
- * @apiUse JWTError
- * @apiUse JWTErrorExample
- * @apiUse AuthorizationHeaderError
- * @apiUse AuthorizationHeaderErrorExample
+ * @name PatchStatus
+ * @memberof StatusHttpRouter
+ * @description Patch existing status
  */
 router.patch(
   PATH_SINGLE,
@@ -565,21 +509,9 @@ router.patch(
 );
 
 /**
- * @api {put} /statuses/:id Put Existing Status
- * @apiVersion 1.0.0
- * @apiName PutStatus
- * @apiGroup Status
- * @apiDescription Put existing status
- * @apiUse RequestHeaders
- * @apiUse Status
- *
- *
- * @apiUse RequestHeadersExample
- * @apiUse StatusSuccessResponse
- * @apiUse JWTError
- * @apiUse JWTErrorExample
- * @apiUse AuthorizationHeaderError
- * @apiUse AuthorizationHeaderErrorExample
+ * @name PutStatus
+ * @memberof StatusHttpRouter
+ * @description Put existing status
  */
 router.put(
   PATH_SINGLE,
@@ -589,21 +521,9 @@ router.put(
 );
 
 /**
- * @api {delete} /statuses/:id Delete Existing Status
- * @apiVersion 1.0.0
- * @apiName DeleteStatus
- * @apiGroup Status
- * @apiDescription Delete existing status
- * @apiUse RequestHeaders
- * @apiUse Status
- *
- *
- * @apiUse RequestHeadersExample
- * @apiUse StatusSuccessResponse
- * @apiUse JWTError
- * @apiUse JWTErrorExample
- * @apiUse AuthorizationHeaderError
- * @apiUse AuthorizationHeaderErrorExample
+ * @name DeleteStatus
+ * @memberof StatusHttpRouter
+ * @description Delete existing status
  */
 router.delete(
   PATH_SINGLE,
@@ -614,21 +534,9 @@ router.delete(
 );
 
 /**
- * @api {get} /jurisdictions/:jurisdiction/statuses List Jurisdiction Statuses
- * @apiVersion 1.0.0
- * @apiName GetJurisdictionStatuses
- * @apiGroup Status
- * @apiDescription Returns a list of statuses of specified jurisdiction
- * @apiUse RequestHeaders
- * @apiUse Statuses
- *
- *
- * @apiUse RequestHeadersExample
- * @apiUse StatusesSuccessResponse
- * @apiUse JWTError
- * @apiUse JWTErrorExample
- * @apiUse AuthorizationHeaderError
- * @apiUse AuthorizationHeaderErrorExample
+ * @name GetJurisdictionStatuses
+ * @memberof StatusHttpRouter
+ * @description Returns a list of statuses of specified jurisdiction
  */
 router.get(
   PATH_JURISDICTION,
@@ -650,16 +558,21 @@ router.get(
  * @license MIT
  * @example
  *
- * const { app } = require('@codetanzania/majifix-status');
- *
- * ...
- *
- * app.start();
+ * const { Status, start } = require('@codetanzania/majifix-status');
+ * start(error => { ... });
  *
  */
 
-/* declarations */
-/* extract information from package.json */
+/**
+ * @name info
+ * @description package information
+ * @type {object}
+ *
+ * @author lally elias <lallyelias87@gmail.com>
+ * @author rijkerd <richardaggrey7@gmail.com>
+ * @since 1.0.0
+ * @version 0.1.0
+ */
 const info = pkg(
   `${__dirname}/package.json`,
   'name',
@@ -673,7 +586,16 @@ const info = pkg(
   'contributors'
 );
 
-/* extract api version from router version */
-const apiVersion = router.version;
+/**
+ * @name apiVersion
+ * @description http router api version
+ * @type {string}
+ *
+ * @author lally elias <lallyelias87@gmail.com>
+ * @author rijkerd <richardaggrey7@gmail.com>
+ * @since 0.1.0
+ * @version 0.1.0
+ */
+const apiVersion = apiVersion$1();
 
-export { Status, apiVersion, info, router };
+export { Status, apiVersion, info, router as statusRouter };
