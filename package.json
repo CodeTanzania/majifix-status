@@ -60,8 +60,8 @@
     "url": "https://majifix-status.herokuapp.com/v1/statuses"
   },
   "devDependencies": {
-    "@babel/cli": "7.6.3",
-    "@babel/core": "7.6.3",
+    "@babel/cli": "7.6.4",
+    "@babel/core": "7.6.4",
     "@babel/node": "7.6.3",
     "@babel/preset-env": "7.6.3",
     "@babel/register": "7.6.2",
