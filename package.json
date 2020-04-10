@@ -93,7 +93,7 @@
     "nyc": "15.0.1",
     "prettier": "2.0.4",
     "rimraf": "3.0.2",
-    "rollup": "2.4.0"
+    "rollup": "2.6.0"
   },
   "peerDependencies": {
     "mongoose": ">=5.6.11"
