@@ -102,7 +102,7 @@
     "@codetanzania/majifix-common": ">=0.17.0",
     "@codetanzania/majifix-jurisdiction": ">=1.8.0",
     "randomcolor": ">=0.5.4",
-    "@lykmapipo/common": ">=0.25.2",
+    "@lykmapipo/common": "0.43.1",
     "@lykmapipo/env": ">=0.12.2",
     "@lykmapipo/express-common": ">=0.17.10",
     "@lykmapipo/express-rest-actions": ">=0.6.7",
